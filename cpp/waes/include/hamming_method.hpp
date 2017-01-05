@@ -12,7 +12,7 @@ public:
     HammingMethod();
     virtual ~HammingMethod();
 
-    virtual bool run(const std::string& inputA, const std::string& inputB, uint32_t& result);
+    virtual size_t run(const std::string& inputA, const std::string& inputB);
 
 public:
     typedef std::shared_ptr<HammingMethod> HammingMethodPtr;

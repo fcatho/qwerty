@@ -32,11 +32,13 @@ main(const int argc, const char** argv)
 
     hm = HammingMethodStr::HammingMethodStrPtr(new HammingMethodStr());
     idm = std::static_pointer_cast<IDistanceMethod>(hm);
-    if (!idm->run(inputA, inputB, result)) {
-        return 2;
+    try {
+        result = idm->run(inputA, inputB);
+        std::cout << result << std::endl;
     }
-
-    std::cout << result << std::endl;
+    catch(const IDistanceMethodException &e) {
+        std::cout << e.what() << std::endl;
+    }
 
     return 0;
 }
