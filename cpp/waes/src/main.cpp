@@ -1,6 +1,6 @@
 #include <iostream>
 #include <idistance_method.hpp>
-#include <hamming_method.hpp>
+#include <hamming_method_str.hpp>
 
 using namespace std;
 
@@ -28,8 +28,9 @@ main(const int argc, const char** argv)
     inputB = std::string(argv[2]);
 
     IDistanceMethod::IDistanceMethodPtr idm;
-    HammingMethod::HammingMethodPtr hm;
-    hm = HammingMethod::HammingMethodPtr(new HammingMethod());
+    HammingMethodStr::HammingMethodStrPtr hm;
+
+    hm = HammingMethodStr::HammingMethodStrPtr(new HammingMethodStr());
     idm = std::static_pointer_cast<IDistanceMethod>(hm);
     if (!idm->run(inputA, inputB, result)) {
         return 2;

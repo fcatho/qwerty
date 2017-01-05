@@ -16,6 +16,9 @@ public:
 
 public:
     typedef std::shared_ptr<HammingMethod> HammingMethodPtr;
+
+protected:
+    virtual uint8_t byteHammingDistance(const uint8_t a, const uint8_t b);
 };
 
 #endif //HAMMING_METHOD_HPP
