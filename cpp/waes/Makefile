@@ -7,11 +7,11 @@ BUILD_PATH = obj
 BIN_PATH = bin
 
 # executable # 
-BIN_NAME = waes
+BIN_NAME = hammingstr
 UNIT_TEST_NAME = unit_test
 
 # so name
-LIB_NAME = libwaes
+LIB_NAME = libdistance
 
 # extensions #
 SRC_EXT = cpp
@@ -39,7 +39,7 @@ UNIT_TEST_DEPS = $(UNIT_TEST_OBJECTS:.o=.d) $(UNIT_TEST_APP_OBJECTS:.o=.d)
 
 # flags #
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g -fPIC
-INCLUDES = -I include/ -I /usr/local/include -I ../googletest/googletest/include
+INCLUDES = -I include/ -I /usr/local/include -I ../googletest/googletest/include -I test/
 # Space-separated pkg-config libraries used by this project
 LIB_PATHS = -L. -L ../googletest/googlemock/ -L ../googletest/googlemock/gtest
 LIBS = -lgtest -lgmock -lgmock_main

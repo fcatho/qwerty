@@ -24,7 +24,7 @@ HammingMethod::byteHammingDistance(const uint8_t a, const uint8_t b)
 }
 
 size_t
-HammingMethod::run()//const std::string& inputA, const std::string& inputB)
+HammingMethod::run()
 {
     size_t result;
 
@@ -38,4 +38,19 @@ HammingMethod::run()//const std::string& inputA, const std::string& inputB)
     }
 
     return result;
+}
+
+std::string
+HammingMethod::byte2str(const uint8_t byte)
+{
+    char c = static_cast<char>(byte);
+    std::string s(&c);
+    return s;
+}
+
+std::string
+HammingMethod::blob2str(const std::vector<uint8_t>& blob)
+{
+    std::string s(blob.begin(), blob.end());
+    return s;
 }
