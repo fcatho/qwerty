@@ -28,6 +28,7 @@ HammingMethod::run()
 {
     size_t result;
 
+    //If inputs are not equal size, throw exception
     if (m_inputA.size() != m_inputB.size()) {
         throw IDistanceMethodException(m_inputA.size(), m_inputB.size());
     }
