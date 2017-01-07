@@ -34,6 +34,9 @@ eval $PROGRAM foo >/dev/null
 OUT=$?
 expect_eq 1 $OUT "OneParameter"
 
+HD=`$PROGRAM foo foo bar | tail -n1`
+expect_eq 0 $HD "ThreeParameters"
+
 HD=`$PROGRAM foo foo | tail -n1`
 expect_eq 0 $HD "EqualStrings"
 
