@@ -1,7 +1,7 @@
 #include <hamming_method_str_test.hpp>
 #include <hamming_method_str.hpp>
 
-const size_t HammingMethodStrTest::LONG_STRING_LENGTH = 1000;
+const size_t HammingMethodStrTest::LONG_STRING_LENGTH = 0xFFFFFF;
 
 TEST_F(HammingMethodStrTest, Positive_EmptyInputs)
 {
