@@ -1,6 +1,9 @@
 #include <dummy_method_test.hpp>
 #include <dummy_method.hpp>
 
+using namespace cpp::waes;
+using namespace cpp::waes::test;
+
 TEST_F(DummyMethodTest, Positive_EqualInputs)
 {
     DummyMethod::DummyMethodPtr hm;

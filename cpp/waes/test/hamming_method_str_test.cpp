@@ -1,6 +1,9 @@
 #include <hamming_method_str_test.hpp>
 #include <hamming_method_str.hpp>
 
+using namespace cpp::waes;
+using namespace cpp::waes::test;
+
 const size_t HammingMethodStrTest::LONG_STRING_LENGTH = 0xFFFFFF;
 
 TEST_F(HammingMethodStrTest, Positive_EmptyInputs)

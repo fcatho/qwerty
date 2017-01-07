@@ -1,6 +1,9 @@
 #include <hamming_method_test.hpp>
 #include <hamming_method.hpp>
 
+using namespace cpp::waes;
+using namespace cpp::waes::test;
+
 const size_t HammingMethodTest::LONG_BLOB_LENGTH = 0xFFFFFF;
 
 TEST_F(HammingMethodTest, Positive_EmptyInputs)
