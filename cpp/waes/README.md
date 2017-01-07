@@ -10,7 +10,12 @@ Compilation and execution
 ~~~~
 make
 ~~~~
-* To execute, as an example:
+* To execute, first declare LD_LIBRARY_PATH as follows
+~~~~
+export LD_LIBRARY_PATH=lib
+
+~~~~
+* Then, run as this example:
 ~~~~
 bin/hammingstr foo bar
 3
@@ -24,6 +29,12 @@ Also, unit tests binary will be located in bin folder, with the name **unit_test
 
 **libdistance.so** is the dynamic library containing all classes related to distance computation. This file will be produced in lib folder.
 
+Integration tests
+-----------------
+To guarantee that hammingstr is functional a bash script is provided with a set of integration tests, see test/it file. To execute, run from waes folder:
+~~~~
+test/it bin/hammingstr
+~~~~
 
 Unit Test Dependencies
 ----------------------
@@ -41,7 +52,7 @@ make test
 ~~~~
 * Inside waes folder, set LD_LIBRARY_PATH variable:
 ~~~~
-export LD_LIBRARY_PATH=../googletest/googlemock/:../googletest/googlemock/gtest/
+export LD_LIBRARY_PATH=lib:../googletest/googlemock/:../googletest/googlemock/gtest/
 ~~~~
 * Execute unit tests:
 ~~~~
