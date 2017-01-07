@@ -6,13 +6,13 @@
 #include <memory>
 
 class
-HammingMethod : public IDistanceMethod
+HammingMethod : public IDistanceMethod<std::string>
 {
 public:
     HammingMethod();
     virtual ~HammingMethod();
 
-    virtual size_t run(const std::string& inputA, const std::string& inputB);
+    virtual size_t run();//const std::string& inputA, const std::string& inputB);
 
 public:
     typedef std::shared_ptr<HammingMethod> HammingMethodPtr;

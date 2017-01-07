@@ -27,13 +27,15 @@ main(const int argc, const char** argv)
     inputA = std::string(argv[1]);
     inputB = std::string(argv[2]);
 
-    IDistanceMethod::IDistanceMethodPtr idm;
+    IDistanceMethod<std::string>::IDistanceMethodPtr idm;
     HammingMethodStr::HammingMethodStrPtr hm;
 
     hm = HammingMethodStr::HammingMethodStrPtr(new HammingMethodStr());
-    idm = std::static_pointer_cast<IDistanceMethod>(hm);
+    idm = std::static_pointer_cast<IDistanceMethod<std::string> >(hm);
+    idm->setInputA(inputA);
+    idm->setInputB(inputB);
     try {
-        result = idm->run(inputA, inputB);
+        result = idm->run();
         std::cout << result << std::endl;
     }
     catch(const IDistanceMethodException &e) {

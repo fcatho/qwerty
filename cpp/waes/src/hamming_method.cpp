@@ -24,17 +24,17 @@ HammingMethod::byteHammingDistance(const uint8_t a, const uint8_t b)
 }
 
 size_t
-HammingMethod::run(const std::string& inputA, const std::string& inputB)
+HammingMethod::run()//const std::string& inputA, const std::string& inputB)
 {
     size_t result;
 
-    if (inputA.size() != inputB.size()) {
-        throw IDistanceMethodException(inputA.size(), inputB.size());
+    if (m_inputA.size() != m_inputB.size()) {
+        throw IDistanceMethodException(m_inputA.size(), m_inputB.size());
     }
 
     result = 0;
-    for (size_t i = 0; i < inputA.size(); ++i) {
-        result += byteHammingDistance(static_cast<uint8_t>(inputA[i]), static_cast<uint8_t>(inputB[i]));
+    for (size_t i = 0; i < m_inputA.size(); ++i) {
+        result += byteHammingDistance(static_cast<uint8_t>(m_inputA[i]), static_cast<uint8_t>(m_inputB[i]));
     }
 
     return result;

@@ -41,6 +41,7 @@ private:
     }
 };
 
+template <class T>
 class
 IDistanceMethod
 {
@@ -48,11 +49,29 @@ public:
     IDistanceMethod() {}
     virtual ~IDistanceMethod() {}
 
-    virtual size_t run(const std::string& inputA, const std::string& inputB) = 0;
+    virtual size_t run()=0;//const T& inputA, const T& inputB) = 0;
+    void setInputA(const T& inputA);
+    void setInputB(const T& inputB);
 
 public:
     typedef std::shared_ptr<IDistanceMethod> IDistanceMethodPtr;
 
+protected:
+    T m_inputB;
+    T m_inputA;
+
 };
+
+template <class T>
+void IDistanceMethod<T>::setInputA(const T& input)
+{
+    m_inputA = input;
+}
+
+template <class T>
+void IDistanceMethod<T>::setInputB(const T& input)
+{
+    m_inputB = input;
+}
 
 #endif //IDISTANCE_METHOD_HPP
