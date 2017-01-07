@@ -41,8 +41,10 @@ UNIT_TEST_DEPS = $(UNIT_TEST_OBJECTS:.o=.d) $(UNIT_TEST_APP_OBJECTS:.o=.d)
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g -fPIC
 INCLUDES = -I include/ -I /usr/local/include -I ../googletest/googletest/include -I test/
 # Space-separated pkg-config libraries used by this project
-LIB_PATHS = -L. -L ../googletest/googlemock/ -L ../googletest/googlemock/gtest
-LIBS = -lgtest -lgmock -lgmock_main
+LIB_PATHS = -L.
+UNIT_TEST_LIB_PATHS = -L ../googletest/googlemock/ -L ../googletest/googlemock/gtest
+LIBS = 
+UNIT_TEST_LIBS = -lgtest -lgmock -lgmock_main
 
 CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS)
 
@@ -80,7 +82,7 @@ $(BIN_PATH)/$(LIB_NAME): $(APP_OBJECTS)
 test: dirs $(BIN_PATH)/$(UNIT_TEST_NAME)
 
 $(BIN_PATH)/$(UNIT_TEST_NAME): $(UNIT_TEST_APP_OBJECTS) $(UNIT_TEST_OBJECTS)
-	$(CXX) $(LIB_PATHS) $(LIBS) $^ -o $@
+	$(CXX) $(UNIT_TEST_LIB_PATHS) $(UNIT_TEST_LIBS) $^ -o $@
 
 # Add dependency files, if they exist
 -include $(APP_DEPS)
