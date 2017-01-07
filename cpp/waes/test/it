@@ -1,0 +1,48 @@
+#/bin/bash
+
+usage()
+{
+    echo "Usage"
+    echo "./it <hammingstr binary path>"
+}
+
+expect_eq()
+{
+    if [ $1 -eq $2 ]; then
+        echo "Test $3 ok";
+    else
+        echo "Test $3 fail. Expected value is $1, given is $2"
+    fi
+}
+
+if [ $# -ne 1 ]; then
+    usage
+    exit 1;
+fi
+
+
+PROGRAM=$1
+chmod +x $PROGRAM
+
+echo "Start testing"
+
+eval $PROGRAM >/dev/null
+OUT=$?
+expect_eq 1 $OUT "EmptyCall"
+
+eval $PROGRAM foo >/dev/null
+OUT=$?
+expect_eq 1 $OUT "OneParameter"
+
+HD=`$PROGRAM foo foo | tail -n1`
+expect_eq 0 $HD "EqualStrings"
+
+HD=`$PROGRAM foo bar | tail -n1`
+expect_eq 3 $HD "DifferentString"
+
+HD=`$PROGRAM 0123456789 9876543210 | tail -n1`
+expect_eq 10 $HD "ReversedString"
+
+eval $PROGRAM foo bar1 >/dev/null
+OUT=$?
+expect_eq 0 $OUT "DifferentSizeString"
