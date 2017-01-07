@@ -60,6 +60,8 @@ TEST_F(HammingMethodTest, Positive_DifferentString)
     std::vector<uint8_t> inputA;
     std::vector<uint8_t> inputB;
 
+    // Filling vectors in this way is covering test using complement values,
+    // and also intermittent bits. 0xAA is 0x55 complement
     for (size_t i = 0; i < HammingMethodTest::LONG_BLOB_LENGTH; ++i) {
         inputA.push_back(0x55);
         inputB.push_back(0xAA);

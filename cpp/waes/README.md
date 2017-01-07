@@ -59,7 +59,8 @@ export LD_LIBRARY_PATH=lib:../googletest/googlemock/:../googletest/googlemock/gt
 bin/unit_test
 ~~~~
 
-
-
-
-
+TODO Suggestions
+----------------
+* Add some other algorithms as L1, L2 norms.
+* Add support for file reading, instead of just strings
+* Expand bitwise operation to 32/64bit words. In this case, a lookup table may be a memory limitation.

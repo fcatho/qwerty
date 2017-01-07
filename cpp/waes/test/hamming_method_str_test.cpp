@@ -79,6 +79,7 @@ TEST_F(HammingMethodStrTest, Positive_ComplementString)
     hm->setInputA(inputA);
     hm->setInputB(inputB);
 
+    // To avoid erros due to an add length value, round length using this approach
     expectedDistance = 2*(HammingMethodStrTest::LONG_STRING_LENGTH/2);
     EXPECT_EQ(expectedDistance, hm->run());
 }
