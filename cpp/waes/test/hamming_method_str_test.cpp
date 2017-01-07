@@ -122,6 +122,7 @@ TEST_F(HammingMethodStrTest, Negative_DifferentLength)
         expectedDistance = hm->run();
     }
     catch(const IDistanceMethodException &e) {
+        e.what();
     }
 
     EXPECT_EQ(expectedDistance, 48);
