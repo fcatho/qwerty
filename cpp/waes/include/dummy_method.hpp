@@ -5,6 +5,10 @@
 #include <iostream>
 #include <memory>
 
+namespace cpp
+{
+namespace waes
+{
 /*!
  * @class DummyMethod
  * @brief This class is just an example to show how to build
@@ -35,5 +39,7 @@ public:
         DummyMethodPtr; /*!< Smart pointer for DummyMethodPtr */
 
 };
+}
+}
 
 #endif //DUMMY_METHOD_HPP

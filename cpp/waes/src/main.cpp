@@ -2,7 +2,7 @@
 #include <idistance_method.hpp>
 #include <hamming_method_str.hpp>
 
-using namespace std;
+using namespace cpp::waes;
 
 void
 usage()

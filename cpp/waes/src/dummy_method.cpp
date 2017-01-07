@@ -1,5 +1,7 @@
 #include <dummy_method.hpp>
 
+using namespace cpp::waes;
+
 DummyMethod::DummyMethod()
 {
 }

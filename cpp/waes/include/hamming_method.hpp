@@ -6,6 +6,10 @@
 #include <memory>
 #include <vector>
 
+namespace cpp
+{
+namespace waes
+{
 /*!
  * @class HammingMethod
  * @brief This class computes hamming distance bitwise using as input two strings
@@ -50,5 +54,8 @@ protected:
      */
     virtual uint8_t byteHammingDistance(const uint8_t a, const uint8_t b);
 };
+
+}
+}
 
 #endif //HAMMING_METHOD_HPP

@@ -5,6 +5,10 @@
 #include <iostream>
 #include <memory>
 
+namespace cpp
+{
+namespace waes
+{
 /*!
  * @class HammingMethodStr
  * @brief This class derives from HammingMethod and overrides
@@ -37,5 +41,7 @@ protected:
      */
     virtual uint8_t byteHammingDistance(const uint8_t a, const uint8_t b);
 };
+}
+}
 
 #endif //HAMMING_METHOD_STR_HPP

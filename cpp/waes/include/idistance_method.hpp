@@ -9,6 +9,10 @@
 #include <exception>
 #include <stdexcept>
 
+namespace cpp
+{
+namespace waes
+{
 
 /*!
  * @class IDistanceMethodException
@@ -117,4 +121,6 @@ void IDistanceMethod<T>::setInputB(const T& input)
     m_inputB = input;
 }
 
+}
+}
 #endif //IDISTANCE_METHOD_HPP

@@ -1,5 +1,7 @@
 #include <hamming_method_str.hpp>
 
+using namespace cpp::waes;
+
 HammingMethodStr::HammingMethodStr()
 {
 }

@@ -1,5 +1,7 @@
 #include <hamming_method.hpp>
 
+using namespace cpp::waes;
+
 HammingMethod::HammingMethod()
 {
 }
@@ -52,6 +54,9 @@ HammingMethod::byte2str(const uint8_t byte)
 std::string
 HammingMethod::blob2str(const std::vector<uint8_t>& blob)
 {
-    std::string s(blob.begin(), blob.end());
+    // This casting is faster than std::string s(blob.begin(), blob.end());
+    const char* firstc = (char*)(&blob[0]);
+    std::string s(firstc, blob.size());
+
     return s;
 }
