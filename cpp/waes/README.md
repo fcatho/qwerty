@@ -4,7 +4,7 @@ This library provides a basic infrastructure for distance computation. A generic
 
 To prove code functionality unit tests are also provided. These tests depends on Google Test framework.
 
-Compilation and execution 
+Quick compilation and execution 
 -------------------------
 * Insider waes folder:
 ~~~~
@@ -23,11 +23,8 @@ bin/hammingstr foo bar
 
 Generated files
 ---------------
-Command line application for hamming distance computation between two strings will be located at bin folder, with the name **hammingstr**
-
-Also, unit tests binary will be located in bin folder, with the name **unit_test**
-
-**libdistance.so** is the dynamic library containing all classes related to distance computation. This file will be produced in lib folder.
+**libdistance.so** Dynamic library containing all classes related to distance computation. This file will be produced in lib folder. Use this shared object to expand for any other distance algorithm.
+**hammingstr** Command line application for hamming distance computation between two strings will be located at bin folder. This binary is linked with libdistance.so as an application example.
 
 Integration tests
 -----------------
@@ -38,7 +35,7 @@ test/it bin/hammingstr
 
 Unit Test Dependencies
 ----------------------
-As mentioned before, unit test compilation and execution depends on Google Test Framework. Follow these steps to be able to get a sucessful compilation:
+Unit test compilation and execution depends on Google Test Framework. Follow these steps to be able to get a sucessful compilation:
 * Insider waes folder:
 ~~~~
 git clone https://github.com/google/googletest.git
