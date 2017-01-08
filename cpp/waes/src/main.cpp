@@ -7,9 +7,10 @@ using namespace cpp::waes;
 void
 usage()
 {
-    std::cout << "waes. Compute hamming difference between two given strings" << std::endl;
+    std::cout << "hammingstr. Compute hamming difference between two given " << std::endl;
+    std::cout << "            same size strings. See README.md for more details" << std::endl;
     std::cout << "Usage: " << std::endl;
-    std::cout << "waes <input string A> <input string B>" << std::endl;
+    std::cout << "hammingstr <input string A> <input string B>" << std::endl;
 }
 
 int
