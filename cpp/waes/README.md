@@ -26,6 +26,21 @@ Generated files
 **libdistance.so** Dynamic library containing all classes related to distance computation. This file will be produced in lib folder. Use this shared object to expand for any other distance algorithm.
 **hammingstr** Command line application for hamming distance computation between two strings will be located at bin folder. This binary is linked with libdistance.so as an application example.
 
+hammingstr usage
+---------------
+As already said, hammingstr binary shows how libdistance.so works. This binary computes hamming distance between two input strings of equal size. Use it as command line application with the following syntax:
+
+~~~~
+./hammingstr <inputA> <inputB>
+~~~~
+Output is an integer value representing hamming distance byte-to-byte. For example, *foo* and *oof* will result in a distance of 2 bytes.
+If two strings of different size are given, hammingstr shows an error message like in this example:
+~~~~
+./hammingstr foo fo
+Incompatible input sizes: input A size (3) != input B size (2)
+~~~~
+If none input is provided, a usage message is printed.
+
 Integration tests
 -----------------
 To guarantee that hammingstr is functional a bash script is provided with a set of integration tests, see test/it file. To execute, run from waes folder:
@@ -35,7 +50,7 @@ test/it bin/hammingstr
 
 Unit Test Dependencies
 ----------------------
-Unit test compilation and execution depends on Google Test Framework. Follow these steps to be able to get a sucessful compilation:
+Unit test compilation and execution depends on Google Test Framework. Follow these steps to be able to get a successful compilation:
 * Insider waes folder:
 ~~~~
 git clone https://github.com/google/googletest.git
@@ -61,3 +76,5 @@ TODO Suggestions
 * Add some other algorithms as L1, L2 norms.
 * Add support for file reading, instead of just strings
 * Expand bitwise operation to 32/64bit words. In this case, a lookup table may be a memory limitation.
+* New classes to use a configuration file to read what type of distance will be used
+* Some distance algorithms that not limit equal size inputs
