@@ -6,7 +6,7 @@ To prove code functionality unit tests are also provided. These tests depends on
 
 Quick compilation and execution 
 -------------------------
-* Insider waes folder:
+* From *waes* folder:
 ~~~~
 make
 ~~~~
@@ -23,8 +23,8 @@ bin/hammingstr foo bar
 
 Generated files
 ---------------
-**libdistance.so** Dynamic library containing all classes related to distance computation. This file will be produced in lib folder. Use this shared object to expand for any other distance algorithm.
-**hammingstr** Command line application for hamming distance computation between two strings will be located at bin folder. This binary is linked with libdistance.so as an application example.
+* **libdistance.so** Dynamic library containing all classes related to distance computation. This file will be produced in *lib* folder. Use this shared object to expand for any other distance algorithm.
+* **hammingstr** Command line application for hamming distance computation between two strings will be located at *bin* folder. This binary is linked with libdistance.so as an application example.
 
 hammingstr usage
 ---------------
@@ -43,7 +43,7 @@ If none input is provided, a usage message is printed.
 
 Integration tests
 -----------------
-To guarantee that hammingstr is functional a bash script is provided with a set of integration tests, see test/it file. To execute, run from waes folder:
+To guarantee that hammingstr is functional a bash script is provided with a set of integration tests, see test/it file. To execute, run from *waes* folder:
 ~~~~
 test/it bin/hammingstr
 ~~~~
@@ -51,7 +51,7 @@ test/it bin/hammingstr
 Unit Test Dependencies
 ----------------------
 Unit test compilation and execution depends on Google Test Framework. Follow these steps to be able to get a successful compilation:
-* Insider waes folder:
+* Go to *cpp* folder and run:
 ~~~~
 git clone https://github.com/google/googletest.git
 cd googletest
@@ -62,7 +62,7 @@ make
 ~~~~
 make test
 ~~~~
-* Inside waes folder, set LD_LIBRARY_PATH variable:
+* From *waes* folder, set LD_LIBRARY_PATH variable:
 ~~~~
 export LD_LIBRARY_PATH=lib:../googletest/googlemock/:../googletest/googlemock/gtest/
 ~~~~
