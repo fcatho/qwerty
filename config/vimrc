@@ -1,0 +1,32 @@
+scriptencoding utf-8
+set encoding=utf-8
+syntax on
+filetype indent on
+set hlsearch
+set autoindent
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set showmatch
+set nowrap
+set foldmethod=indent
+set number
+set ruler
+set shellcmdflag=-ic
+"set nofoldenable
+"set background=dark
+"set smartindent
+"set cindent
+
+"let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+map <C-n> :bnext<CR>
+let Tlist_Use_Split_Window = 1
+com TT NERDTree | TlistToggle
+"highlight OverLength ctermbg=gray ctermfg=blue guibg=#592929
+highlight OverLength ctermfg=gray guibg=#592929
+match OverLength /\%81v.\+/
+set list
+set listchars=nbsp:¬,tab:>-,trail:·
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+set vb t_vb=
