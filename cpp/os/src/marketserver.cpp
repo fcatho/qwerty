@@ -1,5 +1,20 @@
 #include <marketserver.hpp>
+#include <cparecord.hpp>
 #include <iostream>
+#include <fstream>
+
+MarketServer::MarketServer(const std::string& instrument,
+                           const std::string& cpaFile,
+                           const std::string& vdaFile)
+    : m_instrument(instrument)
+    , m_cpaFile(cpaFile)
+    , m_vdaFile(vdaFile)
+{
+}
+
+MarketServer::~MarketServer()
+{
+}
 
 void MarketServer::run()
 {
@@ -15,11 +30,13 @@ void MarketServer::run()
         std::cerr << e.what() << std::endl;
     }
 
-    size_t i = 0;
-    std::string data;
-    while (1)
+    std::ifstream in(m_cpaFile);
+    std::string raw;
+    while (std::getline(in, raw))
     {
-        data = std::to_string(i++);
+        CpaRecord cpa;
+        cpa.loadDetails(raw);
+        std::string data = cpa.str();
         server.asyncWrite("*", data);
         sleep(2);
     }

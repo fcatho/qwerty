@@ -31,7 +31,7 @@ INCLUDES = -I include/ -I /usr/local/include
 
 # Space-separated libraries used by this project
 LIB_PATHS = -L $(SO_PATH)
-APP_LIBS = -loscomm -lboost_system -lboost_thread
+APP_LIBS = -loscomm -lboost_system -lboost_thread -lboost_serialization
 
 CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS)
 
