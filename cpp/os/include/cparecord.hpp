@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <cstdint>
 
@@ -8,11 +9,11 @@ struct CpaRecordDetails
     std::string sessionDate;
     std::string instrument;
     uint8_t orderSide;
-    uint32_t orderNumber;
-    uint32_t orderId;
-    uint8_t executionType;
+    uint64_t orderNumber;
+    uint64_t orderId;
+    uint16_t executionType;
     std::string priorityTime;
-    uint32_t priorityIndicator;
+    uint64_t priorityIndicator;
     uint64_t orderPriceInt;
     uint64_t orderPriceDec;
     uint64_t totalQuantity;
@@ -43,6 +44,27 @@ struct CpaRecordDetails
         ar & orderStatus;
         ar & aggressor;
         ar & member;
+    }
+
+    void print()
+    {
+        std::cout << "sessionDate: " << sessionDate << std::endl;
+        std::cout << "instrument: " << instrument << std::endl;
+        std::cout << "orderSide: " << orderSide << std::endl;
+        std::cout << "orderNumber: " << orderNumber << std::endl;
+        std::cout << "orderId: " << orderId << std::endl;
+        std::cout << "executionType: " << executionType << std::endl;
+        std::cout << "priorityTime: " << priorityTime << std::endl;
+        std::cout << "priorityIndicator: " << priorityIndicator << std::endl;
+        std::cout << "orderPriceInt: " << orderPriceInt << std::endl;
+        std::cout << "orderPriceDec: " << orderPriceDec << std::endl;
+        std::cout << "totalQuantity: " << totalQuantity << std::endl;
+        std::cout << "tradedQuantity: " << tradedQuantity << std::endl;
+        std::cout << "orderDate: " << orderDate << std::endl;
+        std::cout << "orderDatetime: " << orderDatetime << std::endl;
+        std::cout << "orderStatus: " << orderStatus << std::endl;
+        std::cout << "aggressor: " << aggressor << std::endl;
+        std::cout << "member: " << member << std::endl;
     }
 };
 

@@ -3,6 +3,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -19,7 +20,8 @@ bool CpaRecord::loadDetails(const std::string& raw)
     boost::char_separator<char> sep(";");
     boost::tokenizer<boost::char_separator<char>> tokens(raw, sep);
 
-    if (std::distance(tokens.begin(), tokens.end()) != 17)
+    std::cout << std::distance(tokens.begin(), tokens.end()) << std::endl;
+    if (std::distance(tokens.begin(), tokens.end()) != 16)
     {
         return false;
     }
@@ -36,25 +38,31 @@ bool CpaRecord::loadDetails(const std::string& raw)
     m_details.orderSide = boost::lexical_cast<uint8_t>(*token);
 
     if ((*(++token)).size() != 15) return false;
-    m_details.orderNumber = boost::lexical_cast<uint32_t>(*token);
+    m_details.orderNumber = boost::lexical_cast<uint64_t>(*token);
 
     if ((*(++token)).size() != 15) return false;
-    m_details.orderId = boost::lexical_cast<uint32_t>(*token);
+    m_details.orderId = boost::lexical_cast<uint64_t>(*token);
 
     if ((*(++token)).size() != 3) return false;
-    m_details.executionType = boost::lexical_cast<uint8_t>(*token);
+    m_details.executionType = boost::lexical_cast<uint16_t>(*token);
 
     if ((*(++token)).size() != 15) return false;
     m_details.priorityTime = *token;
 
     if ((*(++token)).size() != 10) return false;
-    m_details.priorityIndicator = boost::lexical_cast<uint32_t>(*token);
+    m_details.priorityIndicator = boost::lexical_cast<uint64_t>(*token);
 
     if ((*(++token)).size() != 20) return false;
+
     std::size_t dotPos = (*token).find('.');
     if (dotPos == std::string::npos) return false;
-    m_details.orderPriceInt = boost::lexical_cast<uint64_t>((*token).substr(0, dotPos));
-    m_details.orderPriceDec = boost::lexical_cast<uint64_t>((*token).substr(dotPos+1));
+
+    std::string first  = (*token).substr(0, dotPos);
+    std::string second =  (*token).substr(dotPos + 1);
+    boost::algorithm::trim(first);
+    boost::algorithm::trim(second);
+    m_details.orderPriceInt = boost::lexical_cast<uint64_t>(first);
+    m_details.orderPriceDec = boost::lexical_cast<uint64_t>(second);
 
     if ((*(++token)).size() != 18) return false;
     m_details.totalQuantity = boost::lexical_cast<uint64_t>(*token);

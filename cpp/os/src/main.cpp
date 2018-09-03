@@ -3,7 +3,7 @@
 
 int main(const int argc, const char** args)
 {
-    if (argc != 3)
+    if (argc != 4)
     {
         std::cout << "Usage: " << args[0] << " <instrument> <cpa> <vda>" << std::endl;
         return 1;

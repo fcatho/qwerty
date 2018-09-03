@@ -35,11 +35,12 @@ void MarketServer::run()
     while (std::getline(in, raw))
     {
         CpaRecord cpa;
-        cpa.loadDetails(raw);
-        std::string data = cpa.str();
-        server.asyncWrite("*", data);
-        sleep(2);
+        if (cpa.loadDetails(raw))
+        {
+            std::cout << raw << std::endl;
+            std::string data = cpa.str();
+            server.asyncWrite("*", data);
+            sleep(2);
+        }
     }
 }
-
-
