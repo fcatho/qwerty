@@ -1,5 +1,6 @@
 #include <connection.hpp>
 #include <boost/bind.hpp>
+#include <boost/array.hpp>
 #include <fstream>
 
 
@@ -12,13 +13,14 @@ Connection::~Connection()
 {
 }
 
-void Connection::asyncRead(std::string& data)
+void Connection::asyncRead()
 {
+    Buffer buf;
     boost::asio::async_read(m_socket,
-                            boost::asio::buffer(data),
+                            boost::asio::buffer(buf),
                             boost::bind(&Connection::handleRead,
                                         this,
-                                        data,
+                                        buf,
                                         boost::asio::placeholders::error,
                                         boost::asio::placeholders::bytes_transferred));
 }
@@ -46,14 +48,15 @@ void Connection::handleWrite(std::string& data,
     data.erase(0, bytes_transferred);
 }
 
-void Connection::handleRead(std::string& data,
+void Connection::handleRead(Buffer buf,
                              const boost::system::error_code& /*error*/,
                              std::size_t bytesTransferred)
 {
+    std::string d(buf.begin(), buf.end());
     if (bytesTransferred > 0)
     {
         //holder->readBuffer.vinsert(bytesTransferred);
-        m_readCallback(m_address, data);
+        m_readCallback(m_address, d);
     }
 }
 
@@ -86,3 +89,10 @@ const std::string& Connection::getAddress() const
 {
     return m_address;
 }
+
+void Connection::setReadCallback(Functor& callback)
+{
+    m_readCallback = callback;
+}
+
+

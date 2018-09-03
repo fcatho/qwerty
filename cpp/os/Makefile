@@ -4,7 +4,8 @@ APP_SRC_PATH = src
 BUILD_PATH = obj
 SO_PATH=lib
 BIN_PATH = bin
-BIN_NAME = marketserver
+SERVER_NAME = marketserver
+CLIENT_NAME = marketclient
 SO_NAME = liboscomm.so
 SRC_EXT = cpp
 
@@ -15,15 +16,19 @@ SO_SOURCES = $(shell find $(APP_SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | c
 
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
-SO_OBJECTS = $(filter-out $(BUILD_PATH)/main.o,$(SO_SOURCES:$(APP_SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o))
+EXC_OBJECTS = $(BUILD_PATH)/$(SERVER_NAME).o $(BUILD_PATH)/$(CLIENT_NAME).o
+SO_OBJECTS = $(filter-out $(EXC_OBJECTS),$(SO_SOURCES:$(APP_SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o))
 
 # Set the dependency files that will be used to add header dependencies
 SO_DEPS = $(SO_OBJECTS:.o=.d)
 
 # just use main as object, so will cover all our needs
-APP_SOURCES = $(shell find $(APP_SRC_PATH) -name 'main.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
-APP_OBJECTS = $(APP_SOURCES:$(APP_SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
-APP_DEPS = $(APP_OBJECTS:.o=.d)
+SERVER_SOURCES = $(shell find $(APP_SRC_PATH) -name '$(SERVER_NAME).$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+SERVER_OBJECTS = $(SERVER_SOURCES:$(APP_SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+SERVER_DEPS = $(SERVE_OBJECTS:.o=.d)
+CLIENT_SOURCES = $(shell find $(APP_SRC_PATH) -name '$(CLIENT_NAME).$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+CLIENT_OBJECTS = $(CLIENT_SOURCES:$(APP_SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+CLIENT_DEPS = $(CLIENT_OBJECTS:.o=.d)
 
 # flags #
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g -fPIC
@@ -47,7 +52,8 @@ dirs:
 
 .PHONY: clean
 clean:
-	@$(RM) $(BIN_NAME)
+	@$(RM) $(SERVER_NAME)
+	@$(RM) $(CLIENT_NAME)
 	@$(RM) $(SO_NAME)
 	@$(RM) -r $(BUILD_PATH)
 	@$(RM) -r $(BIN_PATH)
@@ -55,10 +61,13 @@ clean:
 
 # checks the executable and symlinks to the output
 .PHONY: all
-all: $(SO_PATH)/$(SO_NAME) $(BIN_PATH)/$(BIN_NAME) 
+all: $(SO_PATH)/$(SO_NAME) $(BIN_PATH)/$(SERVER_NAME) $(BIN_PATH)/$(CLIENT_NAME)
 
 # Creation of the executable
-$(BIN_PATH)/$(BIN_NAME): $(APP_OBJECTS)
+$(BIN_PATH)/$(SERVER_NAME): $(SERVER_OBJECTS)
+	$(CXX) $(LIB_PATHS) $^ -o $@ $(APP_LIBS)
+
+$(BIN_PATH)/$(CLIENT_NAME): $(CLIENT_OBJECTS)
 	$(CXX) $(LIB_PATHS) $^ -o $@ $(APP_LIBS)
 
 # Creation of the so
@@ -69,7 +78,8 @@ $(SO_PATH)/$(SO_NAME): $(SO_OBJECTS)
 
 # Add dependency files, if they exist
 -include $(SO_DEPS)
--include $(APP_DEPS)
+-include $(SERVER_DEPS)
+-include $(CLIENT_DEPS)
 
 # Source file rules
 # After the first compilation they will be joined with the rules from the
