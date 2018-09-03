@@ -76,6 +76,32 @@ public:
     bool loadDetails(const std::string& raw);
     std::string str();
 
+    void pack();
+    void unpack();
+    char* getPack();
+
 private:
     CpaRecordDetails m_details;
+
+    template<class T>
+    void packValue(char* p, T t, const size_t n)
+    {
+        for (size_t i = 0; i < n; ++i)
+        {
+            p = 0xFF & (t >> (8*i));
+            p++;
+        }
+    }
+
+    template<class T>
+    void unpackValue(char* p, T& t, const size_t n)
+    {
+        for (size_t i = 0; i < n; ++i)
+        {
+            t |= (t << (8*i)) & p;
+            p++;
+        }
+    }
+
+    char[] m_pack;
 };

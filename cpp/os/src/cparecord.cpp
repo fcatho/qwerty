@@ -95,3 +95,8 @@ std::string CpaRecord::str()
     archive << m_details;
     return stream.str();
 }
+
+void CpaRecord::pack()
+{
+
+}
