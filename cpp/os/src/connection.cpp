@@ -12,6 +12,17 @@ Connection::~Connection()
 {
 }
 
+void Connection::asyncRead(std::string& data)
+{
+    boost::asio::async_read(m_socket,
+                            boost::asio::buffer(data),
+                            boost::bind(&Connection::handleRead,
+                                        this,
+                                        data,
+                                        boost::asio::placeholders::error,
+                                        boost::asio::placeholders::bytes_transferred));
+}
+
 void Connection::asyncWrite(std::string& data)
 {
     boost::asio::async_write(m_socket,
@@ -33,6 +44,17 @@ void Connection::handleWrite(std::string& data,
                           size_t bytes_transferred)
 {
     data.erase(0, bytes_transferred);
+}
+
+void Connection::handleRead(std::string& data,
+                             const boost::system::error_code& /*error*/,
+                             std::size_t bytesTransferred)
+{
+    if (bytesTransferred > 0)
+    {
+        //holder->readBuffer.vinsert(bytesTransferred);
+        m_readCallback(m_address, data);
+    }
 }
 
 void Connection::updateAddress()
