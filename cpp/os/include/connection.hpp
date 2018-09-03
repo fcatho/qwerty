@@ -3,11 +3,11 @@
 #include <service.hpp>
 #include <boost/asio.hpp>
 
-class Session
+class Connection
 {
 public:
-    Session(Service& service);
-    ~Session();
+    Connection(Service& service);
+    ~Connection();
     void start();
     boost::asio::ip::tcp::socket& getSocket();
     void updateAddress();
@@ -20,4 +20,4 @@ private:
     boost::asio::ip::tcp::socket m_socket;
     std::string m_address;
 };
-typedef std::shared_ptr<Session> SessionPtr;
+typedef std::shared_ptr<Connection> ConnectionPtr;

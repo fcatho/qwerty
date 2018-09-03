@@ -48,15 +48,15 @@ void TcpServer::cancel()
     }
 }
 
-void TcpServer::handleAccept(SessionPtr session, const boost::system::error_code &error)
+void TcpServer::handleAccept(ConnectionPtr connection, const boost::system::error_code &error)
 {
     if (error)
     {
         return;
     }
 
-    session->updateAddress();
-    add(session);
+    connection->updateAddress();
+    add(connection);
 
     if (m_acceptor.is_open())
     {
@@ -67,27 +67,27 @@ void TcpServer::handleAccept(SessionPtr session, const boost::system::error_code
 
 void TcpServer::accept()
 {
-    SessionPtr session(new Session(m_service));
+    ConnectionPtr connection(new Connection(m_service));
     m_acceptor.async_accept(
-        session->getSocket(),
+        connection->getSocket(),
         boost::bind(&TcpServer::handleAccept,
                     this,
-                    session,
+                    connection,
                     boost::asio::placeholders::error));
 }
 
-void TcpServer::add(SessionPtr session)
+void TcpServer::add(ConnectionPtr connection)
 {
-    m_sessions[session->getAddress()] = session;
-    std::cout << "session: " << session->getAddress() << std::endl;
+    m_connections[connection->getAddress()] = connection;
+    std::cout << "connection: " << connection->getAddress() << std::endl;
 }
 
-void TcpServer::remove(SessionPtr session)
+void TcpServer::remove(ConnectionPtr connection)
 {
-    auto it = m_sessions.find(session->getAddress());
-    if (it != m_sessions.end())
+    auto it = m_connections.find(connection->getAddress());
+    if (it != m_connections.end())
     {
-        m_sessions.erase(it);
+        m_connections.erase(it);
     }
 }
 
@@ -95,19 +95,19 @@ bool TcpServer::asyncWrite(const std::string &address, std::string& data)
 {
     if (address != "*")
     {
-        auto sessionIterator = m_sessions.find(address);
-        if (sessionIterator == m_sessions.end() || sessionIterator->second == NULL)
+        auto connectionIterator = m_connections.find(address);
+        if (connectionIterator == m_connections.end() || connectionIterator->second == NULL)
         {
             return false;
         }
 
-        sessionIterator->second->asyncWrite(data);
+        connectionIterator->second->asyncWrite(data);
         return true;
     }
 
-    for (auto session : m_sessions)
+    for (auto connection : m_connections)
     {
-        session.second->asyncWrite(data);
+        connection.second->asyncWrite(data);
     }
 
     return true;
