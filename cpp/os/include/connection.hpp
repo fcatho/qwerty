@@ -17,7 +17,7 @@ public:
     boost::asio::ip::tcp::socket& getSocket();
     void updateAddress();
     const std::string& getAddress() const;
-    void asyncRead();//std::string& data);
+    void asyncRead();
     void asyncWrite(std::string& data);
     void setReadCallback(Functor& callback);
 

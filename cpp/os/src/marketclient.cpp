@@ -7,6 +7,7 @@ int main(const int argc, const char** args)
 {
     if (argc != 3)
     {
+        std::cout << "Usage: " << args[0] << " <host> <port>" << std::endl;
         return 1;
     }
 
@@ -34,7 +35,8 @@ int main(const int argc, const char** args)
     while (1)
     {
         client.asyncRead();
-        sleep(2);
+        usleep(1000);
     }
+
     return 0;
 }

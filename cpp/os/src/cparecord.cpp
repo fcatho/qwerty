@@ -84,7 +84,8 @@ bool CpaRecord::loadDetails(const std::string& raw)
     m_details.orderStatus = boost::lexical_cast<char>(*token);
 
     if ((*(++token)).size() != 1) return false;
-    m_details.aggressor = boost::lexical_cast<uint8_t>(*token);
+    //m_details.aggressor = boost::lexical_cast<uint8_t>(*token);
+    m_details.aggressor = boost::numeric_cast<uint8_t>(boost::lexical_cast<int>(*token) & 0xFF);
 
     if ((*(++token)).size() != 8) return false;
     m_details.member = boost::lexical_cast<uint32_t>(*token);
@@ -123,9 +124,9 @@ std::string CpaRecord::pack()
     std::string str(packet, packet + CPA_DETAILS_LEN);
     str = "#" + str + "@";
 
-    std::cout << "unpacked: ";
-    unpack(str);
-    print();
+    //std::cout << "unpacked: ";
+    //unpack(str);
+    //print();
 
     return str;
 }

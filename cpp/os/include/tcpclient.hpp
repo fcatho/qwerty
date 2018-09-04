@@ -9,6 +9,7 @@ public:
     TcpClient(Service& service);
     ~TcpClient();
     void asyncRead();
+    void syncRead();
     bool asyncConnect(const std::string& host, const uint16_t port, Connection::Functor&);
 
 private:

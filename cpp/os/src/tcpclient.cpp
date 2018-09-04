@@ -1,4 +1,6 @@
 #include <tcpclient.hpp>
+#include <iostream>
+#include <boost/array.hpp>
 
 TcpClient::TcpClient(Service& service)
     : m_service(service)
@@ -21,7 +23,6 @@ void TcpClient::handleConnect(ConnectionPtr connection,
     }
 
     connection->updateAddress();
-    //session->start();
 }
 
 bool TcpClient::asyncConnect(const std::string& host,
@@ -45,6 +46,25 @@ bool TcpClient::asyncConnect(const std::string& host,
                                          boost::bind(&TcpClient::handleConnect, this, m_connection,
                                                      host, port, boost::asio::placeholders::error));
     return true;
+}
+
+void TcpClient::syncRead()
+{
+    Connection::Buffer buf;
+    boost::system::error_code error;
+    size_t len = m_connection->getSocket().read_some(boost::asio::buffer(buf), error);
+
+    if (error == boost::asio::error::eof)
+    {
+        return;
+    }
+    else if (error)
+    {
+        throw boost::system::system_error(error);
+    }
+
+    std::string s(buf.data(), len);
+    std::cout << "s.size: " << s.size() << " buf: " << s << std::endl;
 }
 
 void TcpClient::asyncRead()

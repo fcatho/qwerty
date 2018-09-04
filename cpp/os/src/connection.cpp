@@ -2,6 +2,7 @@
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
 #include <fstream>
+#include <iostream>
 
 
 Connection::Connection(Service& service)
@@ -16,13 +17,12 @@ Connection::~Connection()
 void Connection::asyncRead()
 {
     Buffer buf;
-    boost::asio::async_read(m_socket,
-                            boost::asio::buffer(buf),
-                            boost::bind(&Connection::handleRead,
-                                        this,
-                                        buf,
-                                        boost::asio::placeholders::error,
-                                        boost::asio::placeholders::bytes_transferred));
+    m_socket.async_read_some(boost::asio::buffer(buf),
+                              boost::bind(&Connection::handleRead,
+                                          this,
+                                          buf,
+                                          boost::asio::placeholders::error,
+                                          boost::asio::placeholders::bytes_transferred));
 }
 
 void Connection::asyncWrite(std::string& data)
@@ -49,20 +49,36 @@ void Connection::handleWrite(std::string& data,
 }
 
 void Connection::handleRead(Buffer buf,
-                             const boost::system::error_code& /*error*/,
-                             std::size_t bytesTransferred)
+                            const boost::system::error_code& error,
+                            std::size_t bytesTransferred)
 {
-    std::string d(buf.begin(), buf.end());
-    m_message += d;
-
-    std::cout << "bytesTransferred: " << bytesTransferred << std::endl;
-    std::size_t begin = m_message.find("#");
-    std::size_t end = m_message.find("@");
-    std::string str;
-
-    if (begin != std::string::npos && end != std::string::npos && bytesTransferred > 0)
+    if (error == boost::asio::error::eof)
     {
-        str = m_message.substr(begin, end - begin);
+        return;
+    }
+    else if (error)
+    {
+        throw boost::system::system_error(error);
+    }
+
+    if (bytesTransferred == 0)
+    {
+        return;
+    }
+
+    m_message += std::string(buf.begin(), bytesTransferred);
+    std::size_t end = m_message.find("@");
+    std::size_t begin = m_message.find("#");
+
+
+    if (begin != std::string::npos && end != std::string::npos && end < begin)
+    {
+        m_message.erase(0, end);
+    }
+
+    if (begin != std::string::npos && end != std::string::npos && begin < end)
+    {
+        std::string str = m_message.substr(begin, end - begin);
         m_readCallback(m_address, str);
         m_message.erase(begin, end);
     }
@@ -71,15 +87,15 @@ void Connection::handleRead(Buffer buf,
 void Connection::updateAddress()
 {
     boost::asio::ip::tcp::endpoint remote, local;
-    boost::system::error_code e;
+    boost::system::error_code error;
 
-    remote = m_socket.remote_endpoint(e);
-    if (!e)
+    remote = m_socket.remote_endpoint(error);
+    if (!error)
     {
-        local = m_socket.local_endpoint(e);
+        local = m_socket.local_endpoint(error);
     }
 
-    if (e)
+    if (error)
     {
         return;
     }
