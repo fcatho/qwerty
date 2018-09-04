@@ -53,10 +53,18 @@ void Connection::handleRead(Buffer buf,
                              std::size_t bytesTransferred)
 {
     std::string d(buf.begin(), buf.end());
-    if (bytesTransferred > 0)
+    m_message += d;
+
+    std::cout << "bytesTransferred: " << bytesTransferred << std::endl;
+    std::size_t begin = m_message.find("#");
+    std::size_t end = m_message.find("@");
+    std::string str;
+
+    if (begin != std::string::npos && end != std::string::npos && bytesTransferred > 0)
     {
-        //holder->readBuffer.vinsert(bytesTransferred);
-        m_readCallback(m_address, d);
+        str = m_message.substr(begin, end - begin);
+        m_readCallback(m_address, str);
+        m_message.erase(begin, end);
     }
 }
 

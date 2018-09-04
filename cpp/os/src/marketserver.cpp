@@ -38,8 +38,8 @@ void MarketServer::run()
         CpaRecord cpa;
         if (cpa.loadDetails(raw))
         {
-            std::cout << raw << std::endl;
-            std::string data = cpa.str();
+            std::string data = cpa.pack();
+            std::cout << data << std::endl;
             server.asyncWrite("*", data);
             sleep(2);
         }

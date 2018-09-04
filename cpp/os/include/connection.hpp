@@ -8,7 +8,7 @@ class Connection
 {
 public:
     typedef std::function<void (std::string&, std::string&)> Functor;
-    typedef boost::array<char, 128> Buffer;
+    typedef boost::array<char, 256> Buffer;
 
     Connection(Service& service);
     ~Connection();
@@ -28,6 +28,7 @@ private:
 
     boost::asio::ip::tcp::socket m_socket;
     std::string m_address;
+    std::string m_message;
     Functor m_readCallback;
 
 };

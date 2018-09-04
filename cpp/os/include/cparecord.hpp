@@ -1,71 +1,57 @@
 #pragma once
 
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <cstdint>
 
 struct CpaRecordDetails
 {
-    std::string sessionDate;
-    std::string instrument;
-    uint8_t orderSide;
-    uint64_t orderNumber;
-    uint64_t orderId;
-    uint16_t executionType;
-    std::string priorityTime;
-    uint64_t priorityIndicator;
-    uint64_t orderPriceInt;
-    uint64_t orderPriceDec;
-    uint64_t totalQuantity;
-    uint64_t tradedQuantity;
-    std::string orderDate;
-    std::string orderDatetime;
-    char orderStatus;
-    uint8_t aggressor;
-    uint32_t member;
+    //static const CPA_SESSION_DATE_LEN = 10;
+    //static const CPA_INSTRUMENT_LEN = 50;
+    //static const CPA_PRIORITY_TIME_LEN = 15;
+    //static const CPA_ORDER_DATE_LEN = 10;
+    //static const CPA_ORDER_DATE_TIME_LEN = 19;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int /*version*/)
-    {
-        ar & sessionDate;
-        ar & instrument;
-        ar & orderSide;
-        ar & orderNumber;
-        ar & orderId;
-        ar & executionType;
-        ar & priorityTime;
-        ar & priorityIndicator;
-        ar & orderPriceInt;
-        ar & orderPriceDec;
-        ar & totalQuantity;
-        ar & tradedQuantity;
-        ar & orderDate;
-        ar & orderDatetime;
-        ar & orderStatus;
-        ar & aggressor;
-        ar & member;
-    }
+    char sessionDate[11];
+    char instrument[51];
+    uint8_t orderSide = 0;
+    uint64_t orderNumber = 0;
+    uint64_t orderId = 0;
+    uint16_t executionType = 0;
+    char priorityTime[16];
+    uint64_t priorityIndicator = 0;
+    uint64_t orderPriceInt = 0;
+    uint64_t orderPriceDec = 0;
+    uint64_t totalQuantity = 0;
+    uint64_t tradedQuantity = 0;
+    char orderDate[11];
+    char orderDatetime[20];
+    char orderStatus = 0;
+    uint8_t aggressor = 0;
+    uint32_t member = 0;
 
     void print()
     {
-        std::cout << "sessionDate: " << sessionDate << std::endl;
-        std::cout << "instrument: " << instrument << std::endl;
-        std::cout << "orderSide: " << orderSide << std::endl;
-        std::cout << "orderNumber: " << orderNumber << std::endl;
-        std::cout << "orderId: " << orderId << std::endl;
-        std::cout << "executionType: " << executionType << std::endl;
-        std::cout << "priorityTime: " << priorityTime << std::endl;
-        std::cout << "priorityIndicator: " << priorityIndicator << std::endl;
-        std::cout << "orderPriceInt: " << orderPriceInt << std::endl;
-        std::cout << "orderPriceDec: " << orderPriceDec << std::endl;
-        std::cout << "totalQuantity: " << totalQuantity << std::endl;
-        std::cout << "tradedQuantity: " << tradedQuantity << std::endl;
-        std::cout << "orderDate: " << orderDate << std::endl;
-        std::cout << "orderDatetime: " << orderDatetime << std::endl;
-        std::cout << "orderStatus: " << orderStatus << std::endl;
-        std::cout << "aggressor: " << aggressor << std::endl;
-        std::cout << "member: " << member << std::endl;
+        std::cout << sessionDate << ";"
+                  << instrument << ";"
+                  << (int)orderSide << ";"
+                  << orderNumber << ";"
+                  << orderId << ";"
+                  << executionType << ";"
+                  << priorityTime << ";"
+                  << priorityIndicator << ";"
+                  << orderPriceInt << "."
+                  << orderPriceDec << ";"
+                  << totalQuantity << ";"
+                  << tradedQuantity << ";"
+                  << orderDate << ";"
+                  << orderDatetime << ";"
+                  << orderStatus << ";"
+                  << (int) aggressor << ";"
+                  << member << std::endl;
+
     }
+
 };
 
 class CpaRecord
@@ -73,35 +59,47 @@ class CpaRecord
 public:
     CpaRecord();
     ~CpaRecord();
-    bool loadDetails(const std::string& raw);
-    std::string str();
 
-    void pack();
-    void unpack();
-    char* getPack();
+    bool loadDetails(const std::string& raw);
+    std::string pack();
+    void unpack(const std::string& str);
+    void print();
 
 private:
     CpaRecordDetails m_details;
 
     template<class T>
-    void packValue(char* p, T t, const size_t n)
+    void packValue(unsigned char** p, T t, const int n)
     {
-        for (size_t i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i)
         {
-            p = 0xFF & (t >> (8*i));
-            p++;
+            **p = 0xFF & (t >> (8*i));
+            (*p)++;
         }
     }
+
+    void packValue(unsigned char** p, char* c, const int n)
+    {
+        std::memcpy(*p, c, n);
+        (*p) += n;
+    }
+
 
     template<class T>
-    void unpackValue(char* p, T& t, const size_t n)
+    void unpackValue(unsigned char** p, T& t, const int n)
     {
-        for (size_t i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i)
         {
-            t |= (t << (8*i)) & p;
-            p++;
+            t |= (t << (8*i)) & **p;
+            (*p)++;
         }
     }
 
-    char[] m_pack;
+    void unpackValue(unsigned char** p, char* c, const int n)
+    {
+        std::memcpy(c, *p, n);
+        (*p) += n;
+    }
+
+    static const std::size_t CPA_DETAILS_LEN = 200;
 };
