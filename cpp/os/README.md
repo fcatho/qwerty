@@ -42,3 +42,5 @@ TODO
 ----------------
 * Add VDA parsing
 * Sort VDA/CDA
+* Use std::time for dates
+* Align bytes in the struct
