@@ -95,7 +95,7 @@ bool CpaRecord::loadDetails(const std::string& raw)
 
 std::string CpaRecord::pack()
 {
-    unsigned char packet[CPA_DETAILS_LEN];
+    unsigned char packet[sizeof(CpaRecordDetails)];
     unsigned char *pp = packet;
 
     packValue(&pp, m_details.sessionDate, sizeof(m_details.sessionDate));
@@ -121,21 +121,23 @@ std::string CpaRecord::pack()
     packValue(&pp, m_details.aggressor, 1);
     packValue(&pp, m_details.member, 4);
 
-    std::string str(packet, packet + CPA_DETAILS_LEN);
+    std::string str(packet, packet + sizeof(CpaRecordDetails));
+    std::cout << str.size() << std::endl;
     str = "#" + str + "@";
-
-    //std::cout << "unpacked: ";
-    //unpack(str);
-    //print();
 
     return str;
 }
 
-void CpaRecord::unpack(const std::string& str)
+bool CpaRecord::unpack(const std::string& str)
 {
+    if (str.size() != sizeof(CpaRecordDetails))
+    {
+        return true;
+    }
+
     const char* packet = str.c_str();
     unsigned char *pp = (unsigned char*) packet;
-    pp += 1;
+
     unpackValue(&pp, m_details.sessionDate, 10 + 1);
     unpackValue(&pp, m_details.instrument, 50 + 1);
 
@@ -158,6 +160,8 @@ void CpaRecord::unpack(const std::string& str)
     unpackValue(&pp, m_details.orderStatus, 1);
     unpackValue(&pp, m_details.aggressor, 1);
     unpackValue(&pp, m_details.member, 4);
+
+    return true;
 }
 
 void CpaRecord::print()

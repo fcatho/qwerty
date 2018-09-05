@@ -52,35 +52,29 @@ void Connection::handleRead(Buffer buf,
                             const boost::system::error_code& error,
                             std::size_t bytesTransferred)
 {
-    if (error == boost::asio::error::eof)
-    {
-        return;
-    }
-    else if (error)
-    {
-        throw boost::system::system_error(error);
-    }
-
-    if (bytesTransferred == 0)
+    if (error || bytesTransferred == 0)
     {
         return;
     }
 
     m_message += std::string(buf.begin(), bytesTransferred);
-    std::size_t end = m_message.find("@");
     std::size_t begin = m_message.find("#");
-
+    std::size_t end = m_message.find("@");
 
     if (begin != std::string::npos && end != std::string::npos && end < begin)
     {
-        m_message.erase(0, end);
+        m_message.erase(0, begin);
     }
+
+    begin = m_message.find("#");
+    end = m_message.find("@");
 
     if (begin != std::string::npos && end != std::string::npos && begin < end)
     {
-        std::string str = m_message.substr(begin, end - begin);
+        std::string str = m_message.substr(begin + 1, end - begin - 1);
+
         m_readCallback(m_address, str);
-        m_message.erase(begin, end);
+        m_message.erase(begin, (end - begin + 1));
     }
 }
 

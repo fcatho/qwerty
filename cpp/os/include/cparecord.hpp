@@ -51,7 +51,6 @@ struct CpaRecordDetails
                   << member << std::endl;
 
     }
-
 };
 
 class CpaRecord
@@ -62,7 +61,7 @@ public:
 
     bool loadDetails(const std::string& raw);
     std::string pack();
-    void unpack(const std::string& str);
+    bool unpack(const std::string& str);
     void print();
 
 private:
@@ -101,5 +100,5 @@ private:
         (*p) += n;
     }
 
-    static const std::size_t CPA_DETAILS_LEN = 200;
+    //static const std::size_t CPA_DETAILS_LEN = 200;
 };
