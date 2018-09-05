@@ -163,3 +163,10 @@ void CpaRecord::print()
 {
     m_details.print();
 }
+
+std::string CpaRecord::getInstrument() const
+{
+    std::string str = std::string(m_details.instrument, sizeof(m_details.instrument));
+    boost::trim(str);
+    return str;
+}

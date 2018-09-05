@@ -5,11 +5,10 @@
 #include <fstream>
 #include<boost/program_options.hpp>
 
-
 void run(const int port,
          const std::string& cfile,
          const std::string& /*vfile*/,
-         const std::string& /*instrument*/)
+         const std::string& instrument)
 {
     Service service;
     TcpServer server(service);
@@ -17,11 +16,12 @@ void run(const int port,
     service.start();
     server.asyncListen(port);
     std::ifstream in(cfile);
+
     std::string raw;
     while (std::getline(in, raw))
     {
         CpaRecord cpa;
-        if (cpa.loadDetails(raw))
+        if (cpa.loadDetails(raw) && (cpa.getInstrument() == instrument || instrument.empty()))
         {
             std::cout << raw << std::endl;
             std::string data = cpa.pack();
@@ -67,7 +67,7 @@ bool parseArguments(
     try
     {
         port = vm["port"].as<int>();
-        vfile = vm["vda"].as<std::string>();
+        vfile = ""; /*vm["vda"].as<std::string>()*/
         cfile = vm["cpa"].as<std::string>();
     }
     catch (std::exception& ex)

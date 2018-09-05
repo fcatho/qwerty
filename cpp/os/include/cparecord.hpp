@@ -57,6 +57,7 @@ public:
     std::string pack();
     bool unpack(const std::string& str);
     void print();
+    std::string getInstrument() const;
 
 private:
     CpaRecordDetails m_details;
