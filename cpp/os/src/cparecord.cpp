@@ -30,7 +30,6 @@ bool CpaRecord::loadDetails(const std::string& raw)
 
     if ((*token).size() != 10) return false;
     strcpy(m_details.sessionDate, (*token).c_str());
-    //m_details.sessionDate = *token;
 
     if ((*(++token)).size() != 50) return false;
     strcpy(m_details.instrument, (*token).c_str());
@@ -49,7 +48,6 @@ bool CpaRecord::loadDetails(const std::string& raw)
 
     if ((*(++token)).size() != 15) return false;
     strcpy(m_details.priorityTime, (*token).c_str());
-    //m_details.priorityTime = *token;
 
     if ((*(++token)).size() != 10) return false;
     m_details.priorityIndicator = boost::lexical_cast<uint64_t>(*token);
@@ -74,17 +72,14 @@ bool CpaRecord::loadDetails(const std::string& raw)
 
     if ((*(++token)).size() != 10) return false;
     strcpy(m_details.orderDate, (*token).c_str());
-    //m_details.orderDate = *token;
 
     if ((*(++token)).size() != 19) return false;
     strcpy(m_details.orderDatetime, (*token).c_str());
-    //m_details.orderDatetime = *token;
 
     if ((*(++token)).size() != 1) return false;
     m_details.orderStatus = boost::lexical_cast<char>(*token);
 
     if ((*(++token)).size() != 1) return false;
-    //m_details.aggressor = boost::lexical_cast<uint8_t>(*token);
     m_details.aggressor = boost::numeric_cast<uint8_t>(boost::lexical_cast<int>(*token) & 0xFF);
 
     if ((*(++token)).size() != 8) return false;

@@ -6,12 +6,6 @@
 
 struct CpaRecordDetails
 {
-    //static const CPA_SESSION_DATE_LEN = 10;
-    //static const CPA_INSTRUMENT_LEN = 50;
-    //static const CPA_PRIORITY_TIME_LEN = 15;
-    //static const CPA_ORDER_DATE_LEN = 10;
-    //static const CPA_ORDER_DATE_TIME_LEN = 19;
-
     char sessionDate[11];
     char instrument[51];
     uint8_t orderSide = 0;
@@ -83,7 +77,6 @@ private:
         (*p) += n;
     }
 
-
     template<class T>
     void unpackValue(unsigned char** p, T& t, const int n)
     {
@@ -100,5 +93,4 @@ private:
         (*p) += n;
     }
 
-    //static const std::size_t CPA_DETAILS_LEN = 200;
 };
