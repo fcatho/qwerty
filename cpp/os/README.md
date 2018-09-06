@@ -41,7 +41,7 @@ bin/marketclient --port 1234 --host localhost
 
 Generated files
 ---------------
-* **bin/liboscomm.so** Dynamic library containing all classes related to server client communication.
+* **lib/liboscomm.so** Dynamic library containing all classes related to server client communication.
 * **bin/marketserver** Command line application to serve CPA data
 * **bin/marketclient** Command line application to receive and decode CPA data
 
