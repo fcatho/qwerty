@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd $(dirname $0)
+sudo ./openfortivpn -c config &
+
+sleep 5
+
+sudo route del default ppp0
+sudo route add -net 10.77.0.0 netmask 255.255.0.0 dev ppp0
+sudo route add -net 10.230.0.0 netmask 255.255.0.0 dev ppp0
+sudo route add -net 10.29.130.0 netmask 255.255.255.0 dev ppp0
+sudo route add -net 10.14.30.0 netmask 255.255.255.0 dev ppp0
+sudo route add -net 10.240.1.0 netmask 255.255.255.224 dev ppp0
+sudo route add -net 10.4.30.0 netmask 255.255.255.0 dev ppp0
+sudo route add default gw 192.168.0.1 p8p1
