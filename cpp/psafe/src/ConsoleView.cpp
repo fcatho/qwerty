@@ -10,7 +10,6 @@ bool ConsoleView::keep_going()
 		std::cout << "C - Continue\nX - Exit" << std::endl;
 
 		std::string ans;
-		//std::cin >> ans;
 		std::getline(std::cin, ans);
 
 		if (ans == "C" || ans == "c")
@@ -32,7 +31,6 @@ bool ConsoleView::ask_yes_no(const std::string & question)
 	while (1)
 	{
 		std::cout << question << " (Y/N) ";
-		//std::cin >> ans;
 		std::getline(std::cin, ans);
 		if (ans == "Y" || ans == "y")
 		{
@@ -59,10 +57,10 @@ std::string ConsoleView::ask_entity()
 	return ans;
 }
 
-std::string ConsoleView::ask_ability(const std::string & current_entity, const std::string & new_entity)
+std::string ConsoleView::ask_property(const std::string & current_entity, const std::string & new_entity)
 {
 	std::string ans;
-	std::cout << "What does a " + new_entity + " do, that a " + current_entity + " does not?";
+	std::cout << "What does a " + new_entity + " do, that a " + current_entity + " does not? ";
 	std::getline(std::cin, ans);
 	return ans;
 }
@@ -72,8 +70,8 @@ void ConsoleView::win()
 	std::cout << "I win!!!\n";
 }
 
-bool ConsoleView::check_ability(const std::string & ability)
+bool ConsoleView::check_property(const std::string & property)
 {
-	return ask_yes_no("Does the animal you thought " + ability + "?");
+	return ask_yes_no("Does the animal you thought " + property + "?");
 }
 

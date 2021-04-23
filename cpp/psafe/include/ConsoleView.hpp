@@ -9,9 +9,9 @@ public:
 	bool keep_going() override;
 	bool try_answer(const std::string & entity) override;
 	std::string ask_entity() override;
-	std::string ask_ability(const std::string & current_entity, const std::string & new_entity) override;
+	std::string ask_property(const std::string & current_entity, const std::string & new_entity) override;
 	void win() override;
-	bool check_ability(const std::string & ability) override;
+	bool check_property(const std::string & property) override;
 
 private:
 	bool ask_yes_no(const std::string & question);

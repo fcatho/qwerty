@@ -15,19 +15,27 @@ void GamePresenter::run()
 	}
 
 	auto node = model_->root();
+	bool was_right = false;
 	while (1)
 	{
-		if (node->entity.size())
+		if (node->entity().size())
 		{
-			if (view_->try_answer(node->entity))
+			if (view_->try_answer(node->entity()))
 			{
 				view_->win();
 			}
 			else
 			{
 				auto new_entity = view_->ask_entity();
-				auto new_ability = view_->ask_ability(node->entity, new_entity);
-				model_->add(node, new_entity, new_ability);
+				auto new_property = view_->ask_property(node->entity(), new_entity);
+				if (was_right)
+				{
+					model_->add_right_to(node, new_entity, new_property);
+				}
+				else
+				{
+					model_->add_left_to(node, new_entity, new_property);
+				}
 			}
 
 			if (view_->keep_going())
@@ -38,13 +46,13 @@ void GamePresenter::run()
 			break;
 		}
 
-		if (view_->check_ability(node->ability))
+		if ((was_right = view_->check_property(node->property())))
 		{
-			node = node->right;
+			node = node->right();
 		}
 		else
 		{
-			node = node->left;
+			node = node->left();
 		}
 	}
 }
