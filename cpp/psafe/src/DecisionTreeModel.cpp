@@ -84,14 +84,10 @@ void DecisionTreeModel::add_right(std::shared_ptr<ModelDataInterface> current, s
 	nodes_.push_back(child);
 }
 
+//TODO refatorar estes dois metodos
 void DecisionTreeModel::add_left_to(
 		std::shared_ptr<ModelDataInterface> current, const std::string & entity, const std::string & property)
 {
-	if (!current)
-	{
-		return;
-	}
-
 	auto entity_node = std::make_shared<DecisionNode>();
 	entity_node->entity(entity);
 
@@ -108,11 +104,6 @@ void DecisionTreeModel::add_left_to(
 void DecisionTreeModel::add_right_to(
 		std::shared_ptr<ModelDataInterface> current, const std::string & entity, const std::string & property)
 {
-	if (!current)
-	{
-		return;
-	}
-
 	auto entity_node = std::make_shared<DecisionNode>();
 	entity_node->entity(entity);
 

@@ -3,6 +3,14 @@
 
 #include <string>
 
+class IOInterface
+{
+public:
+	virtual ~IOInterface() {}
+	virtual void write(const std::string & data) = 0;
+	virtual std::string read() = 0;
+};
+
 class ViewInterface
 {
 public:

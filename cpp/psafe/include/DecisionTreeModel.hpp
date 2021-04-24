@@ -30,9 +30,18 @@ class DecisionTreeModel : public ModelInterface
 {
 public:
 	DecisionTreeModel();
-	void init(const std::string & property, const std::string & left_entity, const std::string & right_entity) override;
-	void add_left_to(std::shared_ptr<ModelDataInterface> current, const std::string & entity, const std::string & property) override;
-	void add_right_to(std::shared_ptr<ModelDataInterface> current, const std::string & entity, const std::string & property) override;
+	void init(
+			const std::string & property,
+			const std::string & left_entity,
+			const std::string & right_entity) override;
+	void add_left_to(
+			std::shared_ptr<ModelDataInterface> current,
+			const std::string & entity,
+			const std::string & property) override;
+	void add_right_to(
+			std::shared_ptr<ModelDataInterface> current,
+			const std::string & entity,
+			const std::string & property) override;
 	std::shared_ptr<ModelDataInterface> root() override;
 
 private:
@@ -42,6 +51,5 @@ private:
 
 };
 
-
-
 #endif // DECISION_TREE_MODEL
+

@@ -1,16 +1,32 @@
 #include "ConsoleView.hpp"
 #include <iostream>
 
+void ConsoleIO::write(const std::string & data)
+{
+	std::cout << data;
+}
+
+std::string ConsoleIO::read()
+{
+	std::string data;
+	std::getline(std::cin, data);
+	return data;
+}
+
+ConsoleView::ConsoleView()
+	: io_(std::make_shared<ConsoleIO>())
+{
+}
+
 bool ConsoleView::keep_going()
 {
 	while (1)
 	{
-		std::cout << "\n\n\nGuessing game!!!\n\n\n";
-		std::cout << "Think about an animal...\n\n";
-		std::cout << "C - Continue\nX - Exit" << std::endl;
+		io_->write("\n\n\nGuessing game!!!\n\n\n");
+		io_->write("Think about an animal...\n\n");
+		io_->write("C - Continue\nX - Exit\n");
 
-		std::string ans;
-		std::getline(std::cin, ans);
+		std::string ans = io_->read();
 
 		if (ans == "C" || ans == "c")
 		{
@@ -18,10 +34,10 @@ bool ConsoleView::keep_going()
 		}
 		else if (ans == "X" || ans == "x")
 		{
-			std::cout << "See you later!\n";
+			io_->write("See you later!\n");
 			return false;
 		}
-		std::cout << "\nSorry, invalid option... Try again, please\n";
+		io_->write("\nSorry, invalid option... Try again, please\n");
 	}
 }
 
@@ -30,8 +46,8 @@ bool ConsoleView::ask_yes_no(const std::string & question)
 	std::string ans;
 	while (1)
 	{
-		std::cout << question << " (Y/N) ";
-		std::getline(std::cin, ans);
+		io_->write(question + " (Y/N) ");
+		ans = io_->read();
 		if (ans == "Y" || ans == "y")
 		{
 			return true;
@@ -40,7 +56,7 @@ bool ConsoleView::ask_yes_no(const std::string & question)
 		{
 			return false;
 		}
-		std::cout << "\nInvalid choice\n";
+		io_->write("\nInvalid choice\n");
 	}
 }
 
@@ -51,23 +67,19 @@ bool ConsoleView::try_answer(const std::string & entity)
 
 std::string ConsoleView::ask_entity()
 {
-	std::string ans;
-	std::cout << "What was the animal you thought about? ";
-	std::getline(std::cin, ans);
-	return ans;
+	io_->write("What was the animal you thought about? ");
+	return io_->read();
 }
 
 std::string ConsoleView::ask_property(const std::string & current_entity, const std::string & new_entity)
 {
-	std::string ans;
-	std::cout << "What does a " + new_entity + " do, that a " + current_entity + " does not? ";
-	std::getline(std::cin, ans);
-	return ans;
+	io_->write("What does a " + new_entity + " do, that a " + current_entity + " does not? ");
+	return io_->read();
 }
 
 void ConsoleView::win()
 {
-	std::cout << "I win!!!\n";
+	io_->write("I win!!!\n");
 }
 
 bool ConsoleView::check_property(const std::string & property)
