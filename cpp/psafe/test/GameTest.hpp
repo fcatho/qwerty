@@ -390,21 +390,21 @@ TEST_F(ConsoleIOTest, write_data)
 	std::ostringstream oss;
 	std::streambuf* p_cout_streambuf = std::cout.rdbuf();
 	std::cout.rdbuf(oss.rdbuf());
-	io_.write("guess_game");
+	io_.write("guessing_game");
 	std::cout.rdbuf(p_cout_streambuf);
 
-	ASSERT_STREQ("guess_game", oss.str().c_str());
+	ASSERT_STREQ("guessing_game", oss.str().c_str());
 }
 
 TEST_F(ConsoleIOTest, read_data)
 {
-	std::istringstream iss("guess_game");
+	std::istringstream iss("guessing_game");
 	std::streambuf* p_cin_streambuf = std::cin.rdbuf();
 	std::cin.rdbuf(iss.rdbuf());
 	std::string ans = io_.read();
 	std::cout.rdbuf(p_cin_streambuf);
 
-	ASSERT_STREQ("guess_game", ans.c_str());
+	ASSERT_STREQ("guessing_game", ans.c_str());
 }
 
 

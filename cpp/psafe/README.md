@@ -21,7 +21,7 @@ Saída
 
 Após build, os arquivos a seguir serão gerados:
 
-* guess_game: executável com o jogo
+* guessing_game: executável com o jogo
 * libgg.a: biblioteca com o código para desenvolvimento
-* guess_game_test: no caso dos testes, este é o executável para validar o código
+* guessing_game_test: no caso dos testes, este é o executável para validar o código
 
