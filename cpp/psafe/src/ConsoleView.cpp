@@ -79,7 +79,7 @@ std::string ConsoleView::ask_property(const std::string & current_entity, const 
 
 void ConsoleView::win()
 {
-	io_->write("I win!!!\n");
+	io_->write("\n\nI win!!!\n");
 }
 
 bool ConsoleView::check_property(const std::string & property)

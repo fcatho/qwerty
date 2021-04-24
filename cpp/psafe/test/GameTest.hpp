@@ -381,7 +381,7 @@ TEST_F(ConsoleViewTest, ask_property)
 
 TEST_F(ConsoleViewTest, win_message)
 {
-	EXPECT_CALL(*console_.io_mock_, write("I win!!!\n")).Times(1);
+	EXPECT_CALL(*console_.io_mock_, write("\n\nI win!!!\n")).Times(1);
 	console_.win();
 }
 
