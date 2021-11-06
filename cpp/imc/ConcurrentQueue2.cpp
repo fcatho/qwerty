@@ -4,6 +4,7 @@
 #include <mutex>
 #include <stdexcept>
 #include <thread>
+#include <condition_variable>
 
 template<typename T, uint64_t SIZE = 4096, uint64_t MAX_SPIN_ON_BUSY = 40000000>
 class ConcurrentQueue {
@@ -23,25 +24,27 @@ private:
 
     T mMem[mSize];
     std::mutex mLock;
+    std::condition_variable mCondition;
     uint64_t mReadPtr = 0;
     uint64_t mWritePtr = 0;
 
 public:
-    const T& pop() {
-        if (!peek()) {
-            return mEmpty;
-        }
-
+    const T& front() {
         std::lock_guard<std::mutex> lock(mLock);
-
         if (!peek()) {
             return mEmpty;
         }
 
         T& ret = mMem[mReadPtr & mRingModMask];
 
-        mReadPtr++;
         return ret;
+    }
+
+    void pop()
+    {
+        std::lock_guard<std::mutex> lock(mLock);
+        mReadPtr++;
+        mCondition.notify_one();
     }
 
     bool peek() const {
@@ -53,11 +56,10 @@ public:
     }
 
     bool busyWaitForPush() {
-        uint64_t start = 0;
-        while (getCount() == mSize) {
-            if (start++ > MAX_SPIN_ON_BUSY) {
-                return false;
-            }
+        std::unique_lock<std::mutex> lock(mLock);
+        if (getCount() == mSize)
+        {
+            mCondition.wait(lock);
         }
         return true;
     }
@@ -89,28 +91,27 @@ const T ConcurrentQueue<T, SIZE, MAX_SPIN_ON_BUSY>::mEmpty = T{ };
 int main(int, char**) {
     using Functor = std::function<void()>;
 
-    ConcurrentQueue<Functor*> queue;
+    ConcurrentQueue<Functor*,4> queue;
 
     std::thread consumer([ & ] {
-        while (true) {
+            while (true) {
             if (queue.peek()) {
-                auto task = queue.pop();
+                auto & task = queue.front();
                 (*task)();
                 delete task;
+                queue.pop();
             }
-        }
-    });
+            }
+            });
 
     std::thread producer([ & ] {
-        uint64_t counter = 0;
-        while (true) {
-            auto taskId = counter++;
-            auto newTask = new Functor([ = ] {
-                std::cout << "Running task " << taskId << std::endl << std::flush;
+            uint64_t counter = 0;
+            while (true) {
+                queue.push(new Functor([ &counter ] {
+                    std::cout << "Running task " << counter++ << std::endl << std::flush;
+                    }));
+            }
             });
-            queue.push(newTask);
-        }
-    });
 
     consumer.join();
     producer.join();
