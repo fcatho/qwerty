@@ -9,8 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_compile_options(-Wall)
 include_directories(include)
 
-add_executable(rps
-	src/RPS.cpp
+add_library(rps
 	src/RPSApp.cpp
 	src/ConsoleReader.cpp
 	src/ConsoleWriter.cpp
@@ -18,21 +17,27 @@ add_executable(rps
 	src/HumanPlayer.cpp
 	)
 
+add_executable(rps_game
+	src/RPS.cpp
+	)
 
-#if (UNIT_TEST)
-#	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-#	enable_testing()
-#
-#	include(GoogleTest)
-#	add_executable(guessing_game_test
-#		test/main.cpp)
-#	gtest_add_tests(TARGET guessing_game_test)
-#	add_dependencies(guessing_game_test guessing_game)
-#
-#	target_link_libraries (guessing_game_test
-#		gg
-#		gcov
-#		pthread
-#		gtest
-#		gmock)
-#endif (UNIT_TEST)
+target_link_libraries(rps_game rps)
+
+if (UNIT_TEST)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+	enable_testing()
+
+	include(GoogleTest)
+	add_executable(rps_test
+		test/main.cpp
+		test/RPSTest.cpp)
+	gtest_add_tests(TARGET rps_test)
+	add_dependencies(rps_test rps_game)
+
+	target_link_libraries (rps_test
+		rps
+		gcov
+		pthread
+		gtest
+		gmock)
+endif (UNIT_TEST)

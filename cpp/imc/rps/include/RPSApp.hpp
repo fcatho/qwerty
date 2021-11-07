@@ -15,7 +15,7 @@ public:
 
 private:
 	std::shared_ptr<IPlayer> judge(const char X, const char Y);
-	bool valid_answer(const char ans);
+	bool valid_symbol(const char symbol);
 
 	std::shared_ptr<IPlayer> playerA_;
 	std::shared_ptr<IPlayer> playerB_;

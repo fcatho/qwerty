@@ -6,9 +6,24 @@
 class IPlayer
 {
 public:
-	virtual ~IPlayer() {}
+	IPlayer(const std::string & id)
+		: id_(id)
+	{
+	}
+
+	virtual ~IPlayer()
+	{
+	}
+
+	virtual const std::string & id() const
+	{
+		return id_;
+	}
+
 	virtual char play() = 0;
-	virtual const std::string & id() = 0;
+
+protected:
+	const std::string id_;
 };
 
 #endif // IPLAYER_HPP

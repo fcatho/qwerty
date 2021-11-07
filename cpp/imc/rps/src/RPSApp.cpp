@@ -15,15 +15,20 @@ void RPSApp::run()
 {
 	while (1)
 	{
-		char ansA = playerA_->play();
-		char ansB = playerB_->play();
-		if (!valid_answer(ansA) || !valid_answer(ansB))
+		char symbolA = playerA_->play();
+		if (!valid_symbol(symbolA))
 		{
 			break;
 		}
 
-		writer_->write(std::string(&ansA, 1) + " vs " + std::string(&ansB, 1) + "\n");
-		auto winner = judge(ansA, ansB);
+		char symbolB = playerB_->play();
+		if (!valid_symbol(symbolB))
+		{
+			break;
+		}
+
+		writer_->write(std::string(&symbolA, 1) + " vs " + std::string(&symbolB, 1) + "\n");
+		auto winner = judge(symbolA, symbolB);
 		if (winner)
 		{
 			writer_->write(winner->id() + " win\n\n");
@@ -35,9 +40,9 @@ void RPSApp::run()
 	}
 }
 
-std::shared_ptr<IPlayer> RPSApp::judge(const char ansA, const char ansB)
+std::shared_ptr<IPlayer> RPSApp::judge(const char symbolA, const char symbolB)
 {
-	static const std::unordered_map<std::string, std::shared_ptr<IPlayer>> winner_map {
+	static std::unordered_map<std::string, std::shared_ptr<IPlayer>> winner_map {
 		{"PP", nullptr},
 		{"PR", playerA_},
 		{"PS", playerB_},
@@ -48,11 +53,12 @@ std::shared_ptr<IPlayer> RPSApp::judge(const char ansA, const char ansB)
 		{"SR", playerB_},
 		{"SS", nullptr}};
 
-	return winner_map.find(std::string(&ansA) + std::string(&ansB))->second;
+	std::string key = std::string(&symbolA, 1) + std::string(&symbolB, 1);
+	return winner_map.find(key)->second;
 }
 
-bool RPSApp::valid_answer(const char ans)
+bool RPSApp::valid_symbol(const char symbol)
 {
 	static const std::unordered_set<char> options = {'P', 'R', 'S'};
-	return options.find(ans) != options.end();
+	return options.find(symbol) != options.end();
 }

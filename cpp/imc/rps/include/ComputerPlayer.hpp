@@ -6,12 +6,9 @@
 class ComputerPlayer : public IPlayer
 {
 public:
-	ComputerPlayer();
+	ComputerPlayer(const std::string & id);
 	char play() override;
-	const std::string & id() override;
-
-private:
-	const std::string id_;
 };
 
 #endif // COMPUTERPLAYER_HPP
+
