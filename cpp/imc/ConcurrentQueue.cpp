@@ -4,6 +4,7 @@
 #include <mutex>
 #include <stdexcept>
 #include <thread>
+#include <cassert>
 
 template<typename T, uint64_t SIZE = 4096, uint64_t MAX_SPIN_ON_BUSY = 40000000>
 class ConcurrentQueue {
@@ -132,8 +133,7 @@ int test()
     return 0;
 }
 
-
-
+/*
 int main(int, char**) {
     using Functor = std::function<void()>;
 
@@ -163,4 +163,10 @@ int main(int, char**) {
     consumer.join();
     producer.join();
     return 0;
+}
+*/
+
+int main()
+{
+    return test();
 }
