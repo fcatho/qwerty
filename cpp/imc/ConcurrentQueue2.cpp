@@ -91,7 +91,7 @@ const T ConcurrentQueue<T, SIZE, MAX_SPIN_ON_BUSY>::mEmpty = T{ };
 int main(int, char**) {
     using Functor = std::function<void()>;
 
-    ConcurrentQueue<Functor*,4> queue;
+    ConcurrentQueue<Functor*> queue;
 
     std::thread consumer([ & ] {
             while (true) {

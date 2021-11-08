@@ -51,7 +51,7 @@ std::shared_ptr<IPlayer> RPSApp::decide(const PlayerOption option_a, const Playe
 	auto key = [](const PlayerOption option_a, const PlayerOption option_b)
 		{ return static_cast<char>(option_a) << 8 | static_cast<char>(option_b); };
 
-	static std::unordered_map<uint16_t, size_t> winner_map {
+	static const std::unordered_map<uint16_t, size_t> winner_map {
 		{key(PlayerOption::PAPER, PlayerOption::PAPER), 2},
 		{key(PlayerOption::PAPER, PlayerOption::ROCK), 0},
 		{key(PlayerOption::PAPER, PlayerOption::SCISSORS), 1},
