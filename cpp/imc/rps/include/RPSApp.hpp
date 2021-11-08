@@ -9,7 +9,6 @@ class RPSApp
 {
 public:
 	RPSApp(std::shared_ptr<IPlayer> player_a, std::shared_ptr<IPlayer> player_b, std::shared_ptr<IWriter> writer);
-	virtual ~RPSApp() {}
 
 	/*
 	 * @brief Keep reading from player_a  and player_b until invalid input. If both are valid entries, then
