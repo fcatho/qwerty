@@ -11,6 +11,7 @@ include_directories(include)
 
 add_library(rps
 	src/RPSApp.cpp
+	src/IPlayer.cpp
 	src/ConsoleReader.cpp
 	src/ConsoleWriter.cpp
 	src/ComputerPlayer.cpp

@@ -7,9 +7,15 @@ HumanPlayer::HumanPlayer(const std::string & id, std::shared_ptr<IReader> reader
 {
 }
 
-char HumanPlayer::play()
+PlayerOption HumanPlayer::play()
 {
 	writer_->write("Choose P, R or S: ");
-	return std::toupper(reader_->read().front());
+	char input = std::toupper(reader_->read().front());
+	if (valid(input))
+	{
+		return static_cast<PlayerOption>(input);
+	}
+
+	return PlayerOption::NONE;
 }
 

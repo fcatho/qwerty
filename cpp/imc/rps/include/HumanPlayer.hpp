@@ -10,7 +10,12 @@ class HumanPlayer : public IPlayer
 {
 public:
 	HumanPlayer(const std::string & id, std::shared_ptr<IReader> reader, std::shared_ptr<IWriter> writer);
-	char play() override;
+
+	/*!
+	 * @brief Retrieve input using reader_ and cast it to a value in enum PlayerOptions
+	 * @return value of enum PlayerOptions, if NONE retrieved value from reader_ was invalid
+	 */
+	PlayerOption play() override;
 
 private:
 	std::shared_ptr<IReader> reader_;

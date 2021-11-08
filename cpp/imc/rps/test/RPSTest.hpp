@@ -6,29 +6,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-//class PlayerStub : public IPlayer
-//{
-//public:
-//	PlayerStub(const std::string & id)
-//		: IPlayer(id)
-//	{
-//	}
-//
-//	MOCK_METHOD(char, play, (), (override));
-//};
-//
-//class HUmanPlayerStub : public HumanPlayer
-//{
-//public:
-//	HumanPlayerStub(const std::string & id, std::shared_ptr<IReader> reader, std::shared_ptr<IWriter> writer);
-//		: IPlayer(id)
-//	{
-//	}
-//
-//	MOCK_METHOD(char, play, (), (override));
-//};
-
-
 class WriterStub : public IWriter
 {
 public:
@@ -42,13 +19,12 @@ public:
 };
 
 
-
 class RPSTest : public ::testing::Test
 {
 protected:
 	void SetUp() override;
 	void expect_end();
-	void play(std::shared_ptr<HumanPlayer> player, const char symbol);
+	void play(std::shared_ptr<HumanPlayer> player, const PlayerOption option);
 	void expect_draw();
 	void expect_winner(std::shared_ptr<HumanPlayer> player);
 

@@ -7,11 +7,12 @@ ComputerPlayer::ComputerPlayer(const std::string & id)
 {
 }
 
-char ComputerPlayer::play()
+PlayerOption ComputerPlayer::play()
 {
 	std::srand(std::time(nullptr));
-	static const char options[3] = {'R', 'P', 'S'};
-
-	return options[std::rand() % sizeof(options)];
+	auto pos = std::rand() % IPlayer::VALID_PLAYER_OPTIONS.size();
+	auto it = IPlayer::VALID_PLAYER_OPTIONS.cbegin();
+	std::advance(it, pos);
+	return static_cast<PlayerOption>(*it);
 }
 

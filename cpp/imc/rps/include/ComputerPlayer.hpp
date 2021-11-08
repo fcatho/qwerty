@@ -7,7 +7,11 @@ class ComputerPlayer : public IPlayer
 {
 public:
 	ComputerPlayer(const std::string & id);
-	char play() override;
+
+	/*!
+	 * @brief Return a valid value from enum PlayerOption randomly choosen
+	 */
+	PlayerOption play() override;
 };
 
 #endif // COMPUTERPLAYER_HPP
