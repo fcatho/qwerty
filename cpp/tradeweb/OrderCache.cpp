@@ -8,18 +8,9 @@ OrderCache::OrderCache()
 {
 }
 
-std::size_t OrderCache::sequence(const std::string & orderId)
-{
-  auto it = m_orderIdToSequence.find(orderId);
-  if (it != m_orderIdToSequence.end())
-  {
-    return it->second;
-  }
-  return 0;
-}
-
 void OrderCache::addOrder(Order order)
 {
+  std::unique_lock lock(m_mutex);
   auto result = m_orderIdToSequence.try_emplace(order.orderId(), m_sequence);
   if (result.second)
   {
@@ -36,6 +27,7 @@ void OrderCache::addOrder(Order order)
 
 void OrderCache::cancelOrder(const std::string& orderId)
 {
+  std::unique_lock lock(m_mutex);
   auto it = m_orders.find(sequence(orderId));
   if (it != m_orders.end())
   {
@@ -49,6 +41,7 @@ void OrderCache::cancelOrder(const std::string& orderId)
 
 void OrderCache::cancelOrdersForUser(const std::string& user)
 {
+  std::unique_lock lock(m_mutex);
   auto it = m_ordersByUser.find(user);
   if (it != m_ordersByUser.end())
   {
@@ -66,6 +59,7 @@ void OrderCache::cancelOrdersForUser(const std::string& user)
 
 void OrderCache::cancelOrdersForSecIdWithMinimumQty(const std::string& securityId, unsigned int minQty)
 {
+  std::unique_lock lock(m_mutex);
   auto itBySecSortByQty = m_ordersBySecuritySortByQty.find(securityId);
   if (itBySecSortByQty != m_ordersBySecuritySortByQty.end())
   {
@@ -87,6 +81,7 @@ void OrderCache::cancelOrdersForSecIdWithMinimumQty(const std::string& securityI
 
 unsigned int OrderCache::getMatchingSizeForSecurity(const std::string& securityId)
 {
+  std::shared_lock lock(m_mutex);
   auto itBySecurity = m_ordersBySecurity.find(securityId);
   if (itBySecurity == m_ordersBySecurity.end())
   {
@@ -145,6 +140,7 @@ unsigned int OrderCache::getMatchingSizeForSecurity(const std::string& securityI
 
 std::vector<Order> OrderCache::getAllOrders() const
 {
+  std::shared_lock lock(m_mutex);
   std::vector<Order> orders;
   orders.reserve(m_orders.size());
   for (auto & item : m_orders)
@@ -153,6 +149,16 @@ std::vector<Order> OrderCache::getAllOrders() const
   }
 
   return std::move(orders);
+}
+
+std::size_t OrderCache::sequence(const std::string & orderId)
+{
+  auto it = m_orderIdToSequence.find(orderId);
+  if (it != m_orderIdToSequence.end())
+  {
+    return it->second;
+  }
+  return 0;
 }
 
 void OrderCache::eraseOrderBySecurity(const Order & order)

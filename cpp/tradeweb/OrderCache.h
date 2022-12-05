@@ -5,6 +5,7 @@
 #include <set>
 #include <unordered_map>
 #include <map>
+#include <shared_mutex>
 
 class Order
 {
@@ -87,9 +88,9 @@ public:
   void cancelOrdersForSecIdWithMinimumQty(const std::string& securityId, unsigned int minQty) override;
   unsigned int getMatchingSizeForSecurity(const std::string& securityId) override;
   std::vector<Order> getAllOrders() const override;
-  std::size_t sequence(const std::string & orderId);
 
 private:
+  std::size_t sequence(const std::string & orderId);
   void eraseOrderBySecurity(const Order & order);
   void eraseOrderBySecuritySortByQty(const Order & order);
   void eraseOrderByUser(const Order & order);
@@ -100,5 +101,6 @@ private:
   std::unordered_map<std::string, std::set<std::size_t>> m_ordersBySecurity;
   std::unordered_map<std::string, std::map<unsigned int, std::set<std::size_t>>> m_ordersBySecuritySortByQty;
   std::unordered_map<std::string, std::set<std::size_t>> m_ordersByUser;
+  mutable std::shared_mutex m_mutex;
 };
 
