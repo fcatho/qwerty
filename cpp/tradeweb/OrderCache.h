@@ -2,6 +2,9 @@
 
 #include <string>
 #include <vector>
+#include <set>
+#include <unordered_map>
+#include <map>
 
 class Order
 {
@@ -63,8 +66,38 @@ public:
   // return all orders in cache in a vector
   virtual std::vector<Order> getAllOrders() const = 0;  
 
+  virtual ~OrderCacheInterface() {}
+
 };
 
-class OrderCache
+class OrderCache : public OrderCacheInterface
 {
+public:
+	struct BookEntry
+	{
+		std::string company;
+		unsigned int qty;
+	};
+
+
+  OrderCache();
+  void addOrder(Order order) override;
+  void cancelOrder(const std::string& orderId) override;
+  void cancelOrdersForUser(const std::string& user) override;
+  void cancelOrdersForSecIdWithMinimumQty(const std::string& securityId, unsigned int minQty) override;
+  unsigned int getMatchingSizeForSecurity(const std::string& securityId) override;
+  std::vector<Order> getAllOrders() const override;
+  std::size_t sequence(const std::string & orderId);
+
+private:
+  void eraseOrderBySecurity(const Order & order);
+  void eraseOrderBySecuritySortByQty(const Order & order);
+  void eraseOrderByUser(const Order & order);
+  std::size_t m_sequence;
+
+  std::unordered_map<std::size_t, Order> m_orders;
+  std::unordered_map<std::string, std::size_t> m_orderIdToSequence;
+  std::unordered_map<std::string, std::set<std::size_t>> m_ordersBySecurity;
+  std::unordered_map<std::string, std::map<unsigned int, std::set<std::size_t>>> m_ordersBySecuritySortByQty;
+  std::unordered_map<std::string, std::set<std::size_t>> m_ordersByUser;
 };
