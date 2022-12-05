@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 #include <iostream>
 
 #include "OrderCache.h"
@@ -78,7 +78,7 @@ TEST_F(OrderCacheInterfaceTests, CancelOrder_SingleOrderList_Succeeds)
 
 TEST_F(OrderCacheInterfaceTests, CancelOrder_MultiOrderList_Succeeds)
 {
-  const std::string orderId { "OrdId2" }; // static?
+  const std::string orderId { "OrdId2" };
   m_orderCache.addOrder({ "OrdId1", "SecId1", "Buy", 1000, "User1", "CompanyA" });
   m_orderCache.addOrder({ "OrdId2", "SecId1", "Buy", 1000, "User1", "CompanyA" });
   m_orderCache.addOrder({ "OrdId3", "SecId1", "Buy", 1000, "User1", "CompanyA" });
@@ -190,21 +190,13 @@ TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_OneBuyOneSellOrdersS
 
 TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_ExampleFromReadMe_Success)
 {
-  // OrdId1 SecId1 Buy  1000 User1 CompanyA
   m_orderCache.addOrder({ "OrdId1", "SecId1", "Buy", 1000, "User1", "CompanyA" });
-  // OrdId2 SecId2 Sell 3000 User2 CompanyB
   m_orderCache.addOrder({ "OrdId2", "SecId2", "Sell", 3000, "User2", "CompanyB" });
-  // OrdId3 SecId1 Sell  500 User3 CompanyA
   m_orderCache.addOrder({ "OrdId3", "SecId1", "Sell", 500, "User3", "CompanyA" });
-  // OrdId4 SecId2 Buy   600 User4 CompanyC
   m_orderCache.addOrder({ "OrdId4", "SecId2", "Buy", 600, "User4", "CompanyC" });
-  // OrdId5 SecId2 Buy   100 User5 CompanyB
   m_orderCache.addOrder({ "OrdId5", "SecId2", "Buy", 100, "User5", "CompanyB" });
-  // OrdId6 SecId3 Buy  1000 User6 CompanyD
   m_orderCache.addOrder({ "OrdId6", "SecId3", "Buy", 1000, "User6", "CompanyD" });
-  // OrdId7 SecId2 Buy  2000 User7 CompanyE
   m_orderCache.addOrder({ "OrdId7", "SecId2", "Buy", 2000, "User7", "CompanyE" });
-  // OrdId8 SecId2 Sell 5000 User8 CompanyE
   m_orderCache.addOrder({ "OrdId8", "SecId2", "Sell", 5000, "User8", "CompanyE" });
 
   EXPECT_EQ(m_orderCache.getMatchingSizeForSecurity("SecId1"), 0);
@@ -214,31 +206,18 @@ TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_ExampleFromReadMe_Su
 
 TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_Example1FromReadMe_Success)
 {
-  // OrdId1 SecId1 Sell 100 User10 Company2
   m_orderCache.addOrder({ "OrdId1", "SecId1", "Sell", 100, "User10", "Company2" });
-  // OrdId2 SecId3 Sell 200 User8 Company2
   m_orderCache.addOrder({ "OrdId2", "SecId3", "Sell", 200, "User8", "Company2" });
-  // OrdId3 SecId1 Buy 300 User13 Company2
   m_orderCache.addOrder({ "OrdId3", "SecId1", "Buy", 300, "User13", "Company2" });
-  // OrdId4 SecId2 Sell 400 User12 Company2
   m_orderCache.addOrder({ "OrdId4", "SecId2", "Sell", 400, "User12", "Company2" });
-  // OrdId5 SecId3 Sell 500 User7 Company2
   m_orderCache.addOrder({ "OrdId5", "SecId3", "Sell", 500, "User7", "Company2" });
-  // OrdId6 SecId3 Buy 600 User3 Company1
   m_orderCache.addOrder({ "OrdId6", "SecId3", "Buy", 600, "User3", "Company1" });
-  // OrdId7 SecId1 Sell 700 User10 Company2
   m_orderCache.addOrder({ "OrdId7", "SecId1", "Sell", 700, "User10", "Company2" });
-  // OrdId8 SecId1 Sell 800 User2 Company1
   m_orderCache.addOrder({ "OrdId8", "SecId1", "Sell", 800, "User2", "Company1" });
-  // OrdId9 SecId2 Buy 900 User6 Company2
   m_orderCache.addOrder({ "OrdId9", "SecId2", "Buy", 900, "User6", "Company2" });
-  // OrdId10 SecId2 Sell 1000 User5 Company1
   m_orderCache.addOrder({ "OrdId10", "SecId2", "Sell", 1000, "User5", "Company1" });
-  // OrdId11 SecId1 Sell 1100 User13 Company2
   m_orderCache.addOrder({ "OrdId11", "SecId1", "Sell", 1100, "User13", "Company2" });
-  // OrdId12 SecId2 Buy 1200 User9 Company2
   m_orderCache.addOrder({ "OrdId12", "SecId2", "Buy", 1200, "User9", "Company2" });
-  // OrdId13 SecId1 Sell 1300 User1 Company
   m_orderCache.addOrder({ "OrdId13", "SecId1", "Sell", 1300, "User1", "Company" });
 
   EXPECT_EQ(m_orderCache.getMatchingSizeForSecurity("SecId1"), 300);
