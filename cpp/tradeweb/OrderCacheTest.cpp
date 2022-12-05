@@ -177,6 +177,7 @@ TEST_F(OrderCacheInterfaceTests, CancelOrdersForSecIdWithMinimumQty_MultipleOrde
   EXPECT_EQ(orders.size(), 8);
   m_orderCache.cancelOrdersForSecIdWithMinimumQty(secId, 1000);
   orders = m_orderCache.getAllOrders();
+
   EXPECT_EQ(orders.size(), 6);
 }
 
@@ -326,6 +327,61 @@ TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_Empty)
 {
   EXPECT_EQ(m_orderCache.getMatchingSizeForSecurity("SecId1"), 0);
 }
+
+TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_OrdersAtBottom)
+{
+  m_orderCache.addOrder({ "OrdId53", "SecId1", "Buy",  300, "User2", "Company1" });
+  m_orderCache.addOrder({ "OrdId09", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId54", "SecId1", "Buy",  100, "User2", "Company1" });
+  m_orderCache.addOrder({ "OrdId39", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId19", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId12", "SecId1", "Buy",  900, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId06", "SecId1", "Buy",  300, "User3", "Company1" });
+  m_orderCache.addOrder({ "OrdId16", "SecId1", "Buy",  100, "User3", "Company1" });
+  m_orderCache.addOrder({ "OrdId42", "SecId1", "Sell", 700, "User5", "Company2" });
+  m_orderCache.addOrder({ "OrdId4e", "SecId1", "Sell", 700, "User5", "Company2" });
+  m_orderCache.addOrder({ "OrdId4b", "SecId1", "Sell", 700, "User5", "Company2" });
+
+  EXPECT_EQ(m_orderCache.getMatchingSizeForSecurity("SecId1"), 2000);
+}
+
+TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_AfterFilterMinQty)
+{
+  m_orderCache.addOrder({ "OrdId53", "SecId1", "Buy",  300, "User2", "Company1" });
+  m_orderCache.addOrder({ "OrdId09", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId54", "SecId1", "Buy",  100, "User2", "Company1" });
+  m_orderCache.addOrder({ "OrdId39", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId19", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId12", "SecId1", "Buy",  900, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId06", "SecId1", "Buy",  300, "User3", "Company1" });
+  m_orderCache.addOrder({ "OrdId16", "SecId1", "Buy",  100, "User3", "Company1" });
+  m_orderCache.addOrder({ "OrdId42", "SecId1", "Sell", 200, "User5", "Company2" });
+  m_orderCache.addOrder({ "OrdId4e", "SecId1", "Sell", 100, "User5", "Company2" });
+  m_orderCache.addOrder({ "OrdId4b", "SecId1", "Sell", 100, "User5", "Company2" });
+
+  m_orderCache.cancelOrdersForSecIdWithMinimumQty("SecId1", 300);
+  EXPECT_EQ(m_orderCache.getMatchingSizeForSecurity("SecId1"), 400);
+}
+
+TEST_F(OrderCacheInterfaceTests, GetMatchingSizeForSecurity_AfterCancelUser)
+{
+  m_orderCache.addOrder({ "OrdId53", "SecId1", "Buy",  300, "User2", "Company1" });
+  m_orderCache.addOrder({ "OrdId09", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId54", "SecId1", "Buy",  100, "User2", "Company1" });
+  m_orderCache.addOrder({ "OrdId39", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId19", "SecId1", "Buy",  100, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId12", "SecId1", "Buy",  900, "User5", "Company1" });
+  m_orderCache.addOrder({ "OrdId06", "SecId1", "Buy",  300, "User3", "Company1" });
+  m_orderCache.addOrder({ "OrdId16", "SecId1", "Buy",  100, "User3", "Company1" });
+  m_orderCache.addOrder({ "OrdId42", "SecId1", "Sell", 200, "User5", "Company2" });
+  m_orderCache.addOrder({ "OrdId4e", "SecId1", "Sell", 100, "User2", "Company2" });
+  m_orderCache.addOrder({ "OrdId4b", "SecId1", "Sell", 100, "User4", "Company2" });
+
+  m_orderCache.cancelOrdersForUser("User3");
+  m_orderCache.cancelOrdersForUser("User5");
+  EXPECT_EQ(m_orderCache.getMatchingSizeForSecurity("SecId1"), 200);
+}
+
 
 int main(int argc, char * argv[])
 {
