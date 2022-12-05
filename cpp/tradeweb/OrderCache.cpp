@@ -2,6 +2,8 @@
 #include <memory>
 #include <list>
 
+const std::string OrderCache::BUY_SIDE = "Buy";
+
 OrderCache::OrderCache()
   : m_sequence(1)
 {
@@ -129,7 +131,7 @@ unsigned int OrderCache::getMatchingSizeForSecurity(const std::string& securityI
   for (auto & orderSequence : orderSequences)
   {
     auto order = m_orders.at(orderSequence);
-    matchingSize += order.side() == "Buy"
+    matchingSize += order.side() == BUY_SIDE
       ? match(order, bid, ask)
       : match(order, ask, bid);
   }

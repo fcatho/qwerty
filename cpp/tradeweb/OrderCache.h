@@ -102,5 +102,7 @@ private:
   std::unordered_map<std::string, std::map<unsigned int, std::set<std::size_t>>> m_ordersBySecuritySortByQty;
   std::unordered_map<std::string, std::set<std::size_t>> m_ordersByUser;
   mutable std::shared_mutex m_mutex;
+
+  static const std::string BUY_SIDE;
 };
 
