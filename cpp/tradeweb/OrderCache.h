@@ -8,7 +8,7 @@
 
 class Order
 {
-  
+
  public:
 
   // do not alter signature of this constructor
@@ -23,9 +23,9 @@ class Order
   std::string user() const       { return m_user; }
   std::string company() const    { return m_company; }
   unsigned int qty() const       { return m_qty; }
-  
+
  private:
-  
+
   // use the below to hold the order data
   // do not remove the these member variables  
   std::string m_orderId;     // unique order id
@@ -34,7 +34,7 @@ class Order
   unsigned int m_qty;        // qty for this order
   std::string m_user;        // user name who owns this order
   std::string m_company;     // company for user
-    
+
 };
 
 
@@ -43,28 +43,28 @@ class Order
 // are needed. 
 class OrderCacheInterface
 {
-    
+
 public:
-  
+
   // implememnt the 6 methods below, do not alter signatures
 
   // add order to the cache
-  virtual void addOrder(Order order) = 0; 
+  virtual void addOrder(Order order) = 0;
 
   // remove order with this unique order id from the cache
-  virtual void cancelOrder(const std::string& orderId) = 0; 
+  virtual void cancelOrder(const std::string& orderId) = 0;
 
   // remove all orders in the cache for this user
-  virtual void cancelOrdersForUser(const std::string& user) = 0; 
+  virtual void cancelOrdersForUser(const std::string& user) = 0;
 
   // remove all orders in the cache for this security with qty >= minQty
   virtual void cancelOrdersForSecIdWithMinimumQty(const std::string& securityId, unsigned int minQty) = 0; 
 
   // return the total qty that can match for the security id
-  virtual unsigned int getMatchingSizeForSecurity(const std::string& securityId) = 0; 
+  virtual unsigned int getMatchingSizeForSecurity(const std::string& securityId) = 0;
 
   // return all orders in cache in a vector
-  virtual std::vector<Order> getAllOrders() const = 0;  
+  virtual std::vector<Order> getAllOrders() const = 0;
 
   virtual ~OrderCacheInterface() {}
 
@@ -73,11 +73,11 @@ public:
 class OrderCache : public OrderCacheInterface
 {
 public:
-	struct BookEntry
-	{
-		std::string company;
-		unsigned int qty;
-	};
+  struct BookEntry
+  {
+    std::string company;
+    unsigned int qty;
+  };
 
 
   OrderCache();
@@ -95,9 +95,10 @@ private:
   void eraseOrderByUser(const Order & order);
   std::size_t m_sequence;
 
-  std::unordered_map<std::size_t, Order> m_orders;
+  std::map<std::size_t, Order> m_orders;
   std::unordered_map<std::string, std::size_t> m_orderIdToSequence;
   std::unordered_map<std::string, std::set<std::size_t>> m_ordersBySecurity;
   std::unordered_map<std::string, std::map<unsigned int, std::set<std::size_t>>> m_ordersBySecuritySortByQty;
   std::unordered_map<std::string, std::set<std::size_t>> m_ordersByUser;
 };
+
