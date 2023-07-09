@@ -2,7 +2,7 @@ Read Me:
  
   - Your task is to implement an in-memory cache of order objects that supports 
     adding new orders, removing existing orders and matching buy and sell orders. 
-		- On "order" is a request to buy or sell a financial security (eg. bond, stock, 
+		- An "order" is a request to buy or sell a financial security (eg. bond, stock, 
 		  commodity, etc.)
 		- Each order is uniquely identified by an order id
 		- Each security has a different security id 
@@ -16,7 +16,7 @@ Read Me:
        - You may add additional members if you like
        - For your implementation of OrderCacheInterface:
             - Write a class that derives OrderCacheInterface
-            - Choose appropriate data structure(s) to hold Order objects and any additional data you'd like            
+            - Choose appropriate data structure(s) to hold Order objects and any additional data you'd like
             - Implement the following methods (do not change their signatures)
                 - addOrder()
                 - cancelOrder()
@@ -52,7 +52,7 @@ Read Me:
             - security id "ABCD" has a total match of 3000. The Buy order's qty is big enough
               to match against both Sell orders and still has 7000 remaining
         - Any order quantity already allocated to a match cannot be reused as a match 
-          gainst a differnt order (eg the qty 3000 matched above for security id "ABCD" example)
+          against a differnt order (eg the qty 3000 matched above for security id "ABCD" example)
         - Some orders may not match entirely or at all 
         - Users in the same company cannot match against each other
    
@@ -103,7 +103,7 @@ Read Me:
             OrdId10 SecId2 Sell 1000 User5 Company1
             OrdId11 SecId1 Sell 1100 User13 Company2
             OrdId12 SecId2 Buy 1200 User9 Company2
-            OrdId13 SecId1 Sell 1300 User1 Company
+            OrdId13 SecId1 Sell 1300 User1 Company2
 
         Total qty matching for security ids:
             SecId1 300
